@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0a0a0f">
+    <title>Productivo — Твой путь к успеху</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        ::-webkit-scrollbar { display: none; }
+        body { 
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .glass { 
+            background: rgba(255,255,255,0.05); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .glass-strong {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(135deg, rgba(102,126,234,0.3), rgba(118,75,162,0.3));
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+        .bento-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .bento-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(102,126,234,0.2);
+        }
+        .bento-card:active {
+            transform: scale(0.98);
+        }
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.05); }
+        }
+        .float { animation: float 6s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .progress-ring { transform: rotate(-90deg); }
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .tab-active { 
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+        }
+        .water-wave {
+            animation: wave 3s ease-in-out infinite;
+        }
+        @keyframes wave {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(-5px) translateY(-3px); }
+            75% { transform: translateX(5px) translateY(-3px); }
+        }
+        .slide-up {
+            animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            animation: confetti-fall 3s linear forwards;
+        }
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        input, textarea {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102,126,234,0.3);
+        }
+        .nav-item {
+            transition: all 0.3s ease;
+        }
+        .nav-item.active {
+            color: #667eea;
+        }
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+        .streak-fire {
+            animation: fire 0.5s ease-in-out infinite alternate;
+        }
+        @keyframes fire {
+            from { transform: scale(1) rotate(-5deg); }
+            to { transform: scale(1.1) rotate(5deg); }
+        }
+    </style>
+</head>
+<body class="text-white pb-24">
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl float"></div>
+        <div class="absolute bottom-40 right-10 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl float" style="animation-delay: -3s;"></div>
+        <div class="absolute top-1/2 left-1/2 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl float" style="animation-delay: -1.5s;"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="app" class="relative z-10">
+        <!-- Splash Screen -->
+        <div id="splash" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0a0a0f]">
+            <div class="text-center">
+                <div class="text-6xl mb-4 float">🚀</div>
+                <h1 class="text-3xl font-bold gradient-text">Productivo</h1>
+                <p class="text-gray-400 mt-2">Загрузка...</p>
+                <div class="mt-6 w-48 h-1 bg-white/10 rounded-full overflow-hidden mx-auto">
+                    <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full shimmer" style="width: 60%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header class="sticky top-0 z-40 glass-strong px-5 py-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-400 text-sm" id="greeting">Доброе утро</p>
+                    <h1 class="text-xl font-bold" id="userName">Пользователь</h1>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 glass px-3 py-2 rounded-2xl">
+                        <span class="streak-fire">🔥</span>
+                        <span class="font-semibold" id="streakCount">0</span>
+                    </div>
+                    <button onclick="showPage('settings')" class="w-10 h-10 glass rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Pages Container -->
+        <main class="px-5 py-4">
+            <!-- Home Page -->
+            <div id="page-home" class="page">
+                <!-- Quick Stats Bento Grid -->
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <!-- Focus Time Card -->
+                    <div class="bento-card glass rounded-3xl p-4 col-span-1" onclick="showPage('pomodoro')">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-2xl">⏱️</span>
+                            <span class="text-xs text-gray-400">Сегодня</span>
+                        </div>
+                        <p class="text-2xl font-bold" id="todayFocus">0ч 0м</p>
+                        <p class="text-gray-400 text-sm">Фокус-время</p>
+                    </div>
+                    
+                    <!-- Tasks Card -->
+                    <div class="bento-card glass rounded-3xl p-4" onclick="showPage('tasks')">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-2xl">✅</span>
+                            <span class="text-xs text-green-400" id="tasksProgress">0%</span>
+                        </div>
+                        <p class="text-2xl font-bold"><span id="tasksDone">0</span>/<span id="tasksTotal">0</span></p>
+                        <p class="text-gray-400 text-sm">Задачи</p>
+                    </div>
+                    
+                    <!-- Water Card -->
+                    <div class="bento-card glass rounded-3xl p-4" onclick="showPage('water')">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-2xl water-wave">💧</span>
+                            <span class="text-xs text-blue-400" id="waterPercent">0%</span>
+                        </div>
+                        <p class="text-2xl font-bold"><span id="waterCurrent">0</span>/<span id="waterGoal">8</span></p>
+                        <p class="text-gray-400 text-sm">Стаканов воды</p>
+                    </div>
+                    
+                    <!-- Sleep Card -->
+                    <div class="bento-card glass rounded-3xl p-4" onclick="showPage('sleep')">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-2xl">😴</span>
+                            <span class="text-xs text-purple-400" id="sleepQuality">—</span>
+                        </div>
+                        <p class="text-2xl font-bold" id="lastSleep">0ч</p>
+                        <p class="text-gray-400 text-sm">Сон</p>
+                    </div>
+                </div>
+
+                <!-- Today's Goals -->
+                <div class="glass rounded-3xl p-5 mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="font-semibold text-lg">Цели на сегодня</h2>
+                        <button onclick="showAddGoalModal()" class="text-purple-400 text-sm">+ Добавить</button>
+                    </div>
+                    <div id="todayGoals" class="space-y-3">
+                        <p class="text-gray-500 text-center py-4">Нет целей на сегодня</p>
+                    </div>
+                </div>
+
+                <!-- Habits Tracker -->
+                <div class="glass rounded-3xl p-5 mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="font-semibold text-lg">Привычки</h2>
+                        <button onclick="showAddHabitModal()" class="text-purple-400 text-sm">+ Добавить</button>
+                    </div>
+                    <div id="habitsContainer" class="grid grid-cols-4 gap-3">
+                        <p class="text-gray-500 text-center py-4 col-span-4">Нет привычек</p>
+                    </div>
+                </div>
+
+                <!-- Quick Pomodoro -->
+                <div class="gradient-border rounded-3xl p-5 mb-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="font-semibold text-lg">Быстрый фокус</h2>
+                            <p class="text-gray-400 text-sm">25 минут концентрации</p>
+                        </div>
+                        <button onclick="showPage('pomodoro')" class="bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 rounded-2xl font-semibold shadow-lg shadow-purple-500/30">
+                            Начать
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Premium Banner -->
+                <div id="premiumBanner" class="relative overflow-hidden rounded-3xl p-5 bg-gradient-to-br from-yellow-500/20 via-orange-500/20 to-red-500/20 border border-yellow-500/30">
+                    <div class="absolute top-2 right-2 text-3xl">👑</div>
+                    <h3 class="font-bold text-lg mb-1">Productivo Pro</h3>
+                    <p class="text-gray-300 text-sm mb-4">Безлимитные цели, AI-аналитика, синхронизация</p>
+                    <button onclick="showPage('subscription')" class="bg-gradient-to-r from-yellow-500 to-orange-500 px-5 py-2 rounded-xl font-semibold text-sm">
+                        Попробовать бесплатно
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tasks Page -->
+            <div id="page-tasks" class="page hidden">
+                <div class="flex items-center justify-between mb-6">
+                    <h1 class="text-2xl font-bold">Задачи</h1>
+                    <button onclick="showAddTaskModal()" class="bg-gradient-to-r from-purple-500 to-pink-500 w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/30">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Filter Tabs -->
+                <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
+                    <button onclick="filterTasks('all')" class="task-filter tab-active px-4 py-2 rounded-xl text-sm whitespace-nowrap" data-filter="all">Все</button>
+                    <button onclick="filterTasks('today')" class="task-filter glass px-4 py-2 rounded-xl text-sm whitespace-nowrap" data-filter="today">Сегодня</button>
+                    <button onclick="filterTasks('important')" class="task-filter glass px-4 py-2 rounded-xl text-sm whitespace-nowrap" data-filter="important">Важные</button>
+                    <button onclick="filterTasks('completed')" class="task-filter glass px-4 py-2 rounded-xl text-sm whitespace-nowrap" data-filter="completed">Выполнено</button>
+                </div>
+
+                <!-- Tasks List -->
+                <div id="tasksList" class="space-y-3">
+                    <p class="text-gray-500 text-center py-8">Нет задач. Создайте первую!</p>
+                </div>
+            </div>
+
+            <!-- Pomodoro Page -->
+            <div id="page-pomodoro" class="page hidden">
+                <h1 class="text-2xl font-bold mb-6 text-center">Помодоро Таймер</h1>
+                
+                <!-- Timer Modes -->
+                <div class="flex gap-2 justify-center mb-8">
+                    <button onclick="setTimerMode('focus')" class="timer-mode tab-active px-4 py-2 rounded-xl text-sm" data-mode="focus">Фокус</button>
+                    <button onclick="setTimerMode('short')" class="timer-mode glass px-4 py-2 rounded-xl text-sm" data-mode="short">Короткий</button>
+                    <button onclick="setTimerMode('long')" class="timer-mode glass px-4 py-2 rounded-xl text-sm" data-mode="long">Длинный</button>
+                </div>
+
+                <!-- Timer Circle -->
+                <div class="relative w-72 h-72 mx-auto mb-8">
+                    <svg class="w-full h-full progress-ring">
+                        <circle cx="144" cy="144" r="130" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="12"/>
+                        <circle id="timerProgress" cx="144" cy="144" r="130" fill="none" stroke="url(#timerGradient)" stroke-width="12" stroke-linecap="round" stroke-dasharray="816.81" stroke-dashoffset="0"/>
+                        <defs>
+                            <linearGradient id="timerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#667eea"/>
+                                <stop offset="50%" stop-color="#764ba2"/>
+                                <stop offset="100%" stop-color="#f093fb"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                        <span id="timerDisplay" class="text-5xl font-bold">25:00</span>
+                        <span id="timerLabel" class="text-gray-400 mt-2">Фокус</span>
+                    </div>
+                </div>
+
+                <!-- Timer Controls -->
+                <div class="flex justify-center gap-4 mb-8">
+                    <button onclick="resetTimer()" class="glass w-14 h-14 rounded-2xl flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                    <button id="timerBtn" onclick="toggleTimer()" class="bg-gradient-to-r from-purple-500 to-pink-500 w-20 h-20 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/30">
+                        <svg id="playIcon" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <svg id="pauseIcon" class="w-8 h-8 hidden" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                        </svg>
+                    </button>
+                    <button onclick="skipTimer()" class="glass w-14 h-14 rounded-2xl flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Session Stats -->
+                <div class="glass rounded-3xl p-5">
+                    <h3 class="font-semibold mb-4">Статистика сессий</h3>
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <p class="text-2xl font-bold text-purple-400" id="todaySessions">0</p>
+                            <p class="text-gray-400 text-sm">Сегодня</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-pink-400" id="weekSessions">0</p>
+                            <p class="text-gray-400 text-sm">Неделя</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-blue-400" id="totalSessions">0</p>
+                            <p class="text-gray-400 text-sm">Всего</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Water Page -->
+            <div id="page-water" class="page hidden">
+                <h1 class="text-2xl font-bold mb-6 text-center">Трекер воды</h1>
+
+                <!-- Water Visual -->
+                <div class="relative w-48 h-64 mx-auto mb-8">
+                    <div class="absolute inset-0 glass rounded-3xl overflow-hidden">
+                        <div id="waterLevel" class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-500 to-cyan-400 transition-all duration-500" style="height: 0%"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center">
+                                <span id="waterDisplay" class="text-4xl font-bold">0</span>
+                                <span class="text-xl">/8</span>
+                                <p class="text-gray-400 text-sm mt-1">стаканов</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Add -->
+                <div class="grid grid-cols-4 gap-3 mb-6">
+                    <button onclick="addWater(1)" class="glass rounded-2xl p-4 text-center bento-card">
+                        <span class="text-2xl">🥤</span>
+                        <p class="text-xs mt-1">250мл</p>
+                    </button>
+                    <button onclick="addWater(2)" class="glass rounded-2xl p-4 text-center bento-card">
+                        <span class="text-2xl">🥛</span>
+                        <p class="text-xs mt-1">500мл</p>
+                    </button>
+                    <button onclick="addWater(3)" class="glass rounded-2xl p-4 text-center bento-card">
+                        <span class="text-2xl">🍶</span>
+                        <p class="text-xs mt-1">750мл</p>
+                    </button>
+                    <button onclick="addWater(4)" class="glass rounded-2xl p-4 text-center bento-card">
+                        <span class="text-2xl">🧴</span>
+                        <p class="text-xs mt-1">1л</p>
+                    </button>
+                </div>
+
+                <!-- Water History -->
+                <div class="glass rounded-3xl p-5">
+                    <h3 class="font-semibold mb-4">История за неделю</h3>
+                    <div class="flex justify-between items-end h-32" id="waterChart">
+                        <!-- Generated by JS -->
+                    </div>
+                    <div class="flex justify-between mt-2 text-xs text-gray-400">
+                        <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sleep Page -->
+            <div id="page-sleep" class="page hidden">
+                <h1 class="text-2xl font-bold mb-6 text-center">Трекер сна</h1>
+
+                <!-- Sleep Stats -->
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="glass rounded-3xl p-5 text-center">
+                        <p class="text-gray-400 text-sm mb-2">Среднее время сна</p>
+                        <p class="text-3xl font-bold text-purple-400" id="avgSleep">0ч</p>
+                    </div>
+                    <div class="glass rounded-3xl p-5 text-center">
+                        <p class="text-gray-400 text-sm mb-2">Качество сна</p>
+                        <p class="text-3xl font-bold text-green-400" id="avgQuality">—</p>
+                    </div>
+                </div>
+
+                <!-- Log Sleep -->
+                <div class="glass rounded-3xl p-5 mb-6">
+                    <h3 class="font-semibold mb-4">Записать сон</h3>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="text-gray-400 text-sm">Лёг спать</label>
+                            <input type="time" id="sleepStart" class="w-full mt-1 px-4 py-3 rounded-xl">
+                        </div>
+                        <div>
+                            <label class="text-gray-400 text-sm">Проснулся</label>
+                            <input type="time" id="sleepEnd" class="w-full mt-1 px-4 py-3 rounded-xl">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="text-gray-400 text-sm">Качество сна</label>
+                        <div class="flex gap-2 mt-2">
+                            <button onclick="setSleepQuality(1)" class="sleep-quality glass px-4 py-2 rounded-xl text-2xl" data-quality="1">😫</button>
+                            <button onclick="setSleepQuality(2)" class="sleep-quality glass px-4 py-2 rounded-xl text-2xl" data-quality="2">😕</button>
+                            <button onclick="setSleepQuality(3)" class="sleep-quality glass px-4 py-2 rounded-xl text-2xl" data-quality="3">😐</button>
+                            <button onclick="setSleepQuality(4)" class="sleep-quality glass px-4 py-2 rounded-xl text-2xl" data-quality="4">😊</button>
+                            <button onclick="setSleepQuality(5)" class="sleep-quality glass px-4 py-2 rounded-xl text-2xl" data-quality="5">😴</button>
+                        </div>
+                    </div>
+                    <button onclick="logSleep()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-3 rounded-xl font-semibold">
+                        Сохранить
+                    </button>
+                </div>
+
+                <!-- Sleep History -->
+                <div class="glass rounded-3xl p-5">
+                    <h3 class="font-semibold mb-4">История сна</h3>
+                    <div id="sleepHistory" class="space-y-3">
+                        <p class="text-gray-500 text-center py-4">Нет записей</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Goals Page -->
+            <div id="page-goals" class="page hidden">
+                <div class="flex items-center justify-between mb-6">
+                    <h1 class="text-2xl font-bold">Цели</h1>
+                    <button onclick="showAddGoalModal()" class="bg-gradient-to-r from-purple-500 to-pink-500 w-12 h-12 rounded-2xl flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Goals Filter -->
+                <div class="flex gap-2 mb-6">
+                    <button onclick="filterGoals('active')" class="goal-filter tab-active px-4 py-2 rounded-xl text-sm" data-filter="active">Активные</button>
+                    <button onclick="filterGoals('completed')" class="goal-filter glass px-4 py-2 rounded-xl text-sm" data-filter="completed">Достигнутые</button>
+                </div>
+
+                <!-- Goals List -->
+                <div id="goalsList" class="space-y-4">
+                    <p class="text-gray-500 text-center py-8">Нет целей. Поставьте свою первую цель!</p>
+                </div>
+            </div>
+
+            <!-- Analytics Page -->
+            <div id="page-analytics" class="page hidden">
+                <h1 class="text-2xl font-bold mb-6">Аналитика</h1>
+
+                <!-- Period Selector -->
+                <div class="flex gap-2 mb-6">
+                    <button onclick="setAnalyticsPeriod('week')" class="analytics-period tab-active px-4 py-2 rounded-xl text-sm" data-period="week">Неделя</button>
+                    <button onclick="setAnalyticsPeriod('month')" class="analytics-period glass px-4 py-2 rounded-xl text-sm" data-period="month">Месяц</button>
+                    <button onclick="setAnalyticsPeriod('year')" class="analytics-period glass px-4 py-2 rounded-xl text-sm" data-period="year">Год</button>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="glass rounded-3xl p-4">
+                        <p class="text-gray-400 text-sm">Выполнено задач</p>
+                        <p class="text-2xl font-bold text-green-400" id="analyticsTasksCompleted">0</p>
+                    </div>
+                    <div class="glass rounded-3xl p-4">
+                        <p class="text-gray-400 text-sm">Фокус-время</p>
+                        <p class="text-2xl font-bold text-purple-400" id="analyticsFocusTime">0ч</p>
+                    </div>
+                    <div class="glass rounded-3xl p-4">
+                        <p class="text-gray-400 text-sm">Средний сон</p>
+                        <p class="text-2xl font-bold text-blue-400" id="analyticsAvgSleep">0ч</p>
+                    </div>
+                    <div class="glass rounded-3xl p-4">
+                        <p class="text-gray-400 text-sm">Streak дней</p>
+                        <p class="text-2xl font-bold text-orange-400" id="analyticsStreak">0</p>
+                    </div>
+                </div>
+
+                <!-- Productivity Chart -->
+                <div class="glass rounded-3xl p-5 mb-6">
+                    <h3 class="font-semibold mb-4">Продуктивность</h3>
+                    <div class="h-40 flex items-end justify-between gap-2" id="productivityChart">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+
+                <!-- AI Insights (Pro Feature) -->
+                <div class="gradient-border rounded-3xl p-5">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="text-xl">🤖</span>
+                        <h3 class="font-semibold">AI-инсайты</h3>
+                        <span class="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full">PRO</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Получите персональные рекомендации на основе ваших данных</p>
+                    <button onclick="showPage('subscription')" class="text-purple-400 text-sm font-semibold">Разблокировать →</button>
+                </div>
+            </div>
+
+            <!-- Subscription Page -->
+            <div id="page-subscription" class="page hidden">
+                <button onclick="showPage('home')" class="glass w-10 h-10 rounded-full flex items-center justify-center mb-6">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+
+                <div class="text-center mb-8">
+                    <span class="text-5xl mb-4 block">👑</span>
+                    <h1 class="text-3xl font-bold gradient-text mb-2">Productivo Pro</h1>
+                    <p class="text-gray-400">Раскройте весь потенциал</p>
+                </div>
+
+                <!-- Features -->
+                <div class="glass rounded-3xl p-5 mb-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Безлимитные цели и задачи</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>AI-аналитика и инсайты</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Синхронизация между устройствами</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Расширенные отчёты</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Виджеты для рабочего стола</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Приоритетная поддержка</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing -->
+                <div class="space-y-4 mb-6">
+                    <div class="glass rounded-3xl p-5 cursor-pointer subscription-option" data-plan="monthly" onclick="selectPlan('monthly')">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-semibold">Месяц</p>
+                                <p class="text-gray-400 text-sm">Отмена в любое время</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-2xl font-bold">299₽</p>
+                                <p class="text-gray-400 text-sm">/месяц</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gradient-border rounded-3xl p-5 cursor-pointer subscription-option selected" data-plan="yearly" onclick="selectPlan('yearly')">
+                        <div class="absolute -top-3 left-4 bg-gradient-to-r from-yellow-500 to-orange-500 px-3 py-1 rounded-full text-xs font-semibold">
+                            Экономия 40%
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-semibold">Год</p>
+                                <p class="text-gray-400 text-sm">Лучшее предложение</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-2xl font-bold">179₽</p>
+                                <p class="text-gray-400 text-sm">/месяц</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Button -->
+                <button onclick="processPayment()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-2xl font-semibold text-lg shadow-lg shadow-purple-500/30 mb-4">
+                    Попробовать 7 дней бесплатно
+                </button>
+                <p class="text-center text-gray-400 text-sm">
+                    Затем <span id="priceDisplay">2148₽/год</span>. Отмена в любое время.
+                </p>
+
+                <!-- YooKassa Notice -->
+                <div class="mt-6 text-center">
+                    <p class="text-gray-500 text-xs">Безопасная оплата через</p>
+                    <div class="flex items-center justify-center gap-2 mt-2">
+                        <span class="glass px-3 py-1 rounded-lg text-sm">ЮKassa</span>
+                        <span class="glass px-3 py-1 rounded-lg text-sm">💳 Visa</span>
+                        <span class="glass px-3 py-1 rounded-lg text-sm">💳 MC</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="page-settings" class="page hidden">
+                <button onclick="showPage('home')" class="glass w-10 h-10 rounded-full flex items-center justify-center mb-6">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+
+                <h1 class="text-2xl font-bold mb-6">Настройки</h1>
+
+                <!-- Profile -->
+                <div class="glass rounded-3xl p-5 mb-4">
+                    <h3 class="font-semibold mb-4">Профиль</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-gray-400 text-sm">Имя</label>
+                            <input type="text" id="settingsName" class="w-full mt-1 px-4 py-3 rounded-xl" placeholder="Введите имя">
+                        </div>
+                        <div>
+                            <label class="text-gray-400 text-sm">Цель воды (стаканов)</label>
+                            <input type="number" id="settingsWaterGoal" class="w-full mt-1 px-4 py-3 rounded-xl" value="8">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications -->
+                <div class="glass rounded-3xl p-5 mb-4">
+                    <h3 class="font-semibold mb-4">Уведомления</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span>Напоминания о воде</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="notifyWater" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-700 rounded-full peer peer-checked:bg-purple-500 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span>Напоминания о задачах</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="notifyTasks" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-700 rounded-full peer peer-checked:bg-purple-500 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span>Напоминания о сне</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="notifySleep" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-700 rounded-full peer peer-checked:bg-purple-500 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pomodoro Settings -->
+                <div class="glass rounded-3xl p-5 mb-4">
+                    <h3 class="font-semibold mb-4">Помодоро</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-gray-400 text-sm">Фокус (минут)</label>
+                            <input type="number" id="settingsFocus" class="w-full mt-1 px-4 py-3 rounded-xl" value="25">
+                        </div>
+                        <div>
+                            <label class="text-gray-400 text-sm">Короткий перерыв (минут)</label>
+                            <input type="number" id="settingsShortBreak" class="w-full mt-1 px-4 py-3 rounded-xl" value="5">
+                        </div>
+                        <div>
+                            <label class="text-gray-400 text-sm">Длинный перерыв (минут)</label>
+                            <input type="number" id="settingsLongBreak" class="w-full mt-1 px-4 py-3 rounded-xl" value="15">
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="saveSettings()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-2xl font-semibold mb-4">
+                    Сохранить настройки
+                </button>
+
+                <button onclick="exportData()" class="w-full glass py-4 rounded-2xl font-semibold mb-4">
+                    📤 Экспорт данных
+                </button>
+
+                <button onclick="clearData()" class="w-full glass py-4 rounded-2xl font-semibold text-red-400">
+                    🗑️ Очистить все данные
+                </button>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 glass-strong px-5 py-4 z-40">
+            <div class="flex justify-between items-center max-w-md mx-auto">
+                <button onclick="showPage('home')" class="nav-item relative flex flex-col items-center active" data-page="home">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    <span class="text-xs mt-1">Главная</span>
+                </button>
+                <button onclick="showPage('tasks')" class="nav-item relative flex flex-col items-center" data-page="tasks">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                    </svg>
+                    <span class="text-xs mt-1">Задачи</span>
+                </button>
+                <button onclick="showPage('pomodoro')" class="nav-item relative flex flex-col items-center" data-page="pomodoro">
+                    <div class="bg-gradient-to-r from-purple-500 to-pink-500 w-14 h-14 rounded-2xl flex items-center justify-center -mt-8 shadow-lg shadow-purple-500/30">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                </button>
+                <button onclick="showPage('goals')" class="nav-item relative flex flex-col items-center" data-page="goals">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                    </svg>
+                    <span class="text-xs mt-1">Цели</span>
+                </button>
+                <button onclick="showPage('analytics')" class="nav-item relative flex flex-col items-center" data-page="analytics">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                    <span class="text-xs mt-1">Статистика</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Modals -->
+    <div id="modalOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden" onclick="closeModal()"></div>
+    
+    <!-- Add Task Modal -->
+    <div id="addTaskModal" class="fixed bottom-0 left-0 right-0 z-50 hidden">
+        <div class="glass-strong rounded-t-3xl p-6 slide-up">
+            <div class="w-12 h-1 bg-gray-600 rounded-full mx-auto mb-6"></div>
+            <h2 class="text-xl font-bold mb-4">Новая задача</h2>
+            <input type="text" id="taskTitle" class="w-full px-4 py-3 rounded-xl mb-4" placeholder="Название задачи">
+            <textarea id="taskDescription" class="w-full px-4 py-3 rounded-xl mb-4 h-24" placeholder="Описание (опционально)"></textarea>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="text-gray-400 text-sm">Дата</label>
+                    <input type="date" id="taskDate" class="w-full mt-1 px-4 py-3 rounded-xl">
+                </div>
+                <div>
+                    <label class="text-gray-400 text-sm">Приоритет</label>
+                    <select id="taskPriority" class="w-full mt-1 px-4 py-3 rounded-xl bg-white/5 border border-white/10">
+                        <option value="low">Низкий</option>
+                        <option value="medium" selected>Средний</option>
+                        <option value="high">Высокий</option>
+                    </select>
+                </div>
+            </div>
+            <button onclick="addTask()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-2xl font-semibold">
+                Добавить задачу
+            </button>
+        </div>
+    </div>
+
+    <!-- Add Goal Modal -->
+    <div id="addGoalModal" class="fixed bottom-0 left-0 right-0 z-50 hidden">
+        <div class="glass-strong rounded-t-3xl p-6 slide-up">
+            <div class="w-12 h-1 bg-gray-600 rounded-full mx-auto mb-6"></div>
+            <h2 class="text-xl font-bold mb-4">Новая цель</h2>
+            <input type="text" id="goalTitle" class="w-full px-4 py-3 rounded-xl mb-4" placeholder="Название цели">
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="text-gray-400 text-sm">Целевое значение</label>
+                    <input type="number" id="goalTarget" class="w-full mt-1 px-4 py-3 rounded-xl" placeholder="100">
+                </div>
+                <div>
+                    <label class="text-gray-400 text-sm">Единица</label>
+                    <input type="text" id="goalUnit" class="w-full mt-1 px-4 py-3 rounded-xl" placeholder="шт, км, ч...">
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="text-gray-400 text-sm">Дедлайн</label>
+                <input type="date" id="goalDeadline" class="w-full mt-1 px-4 py-3 rounded-xl">
+            </div>
+            <div class="mb-4">
+                <label class="text-gray-400 text-sm">Иконка</label>
+                <div class="flex gap-2 mt-2 flex-wrap">
+                    <button type="button" onclick="selectGoalIcon('🎯')" class="goal-icon glass p-3 rounded-xl text-2xl" data-icon="🎯">🎯</button>
+                    <button type="button" onclick="selectGoalIcon('💪')" class="goal-icon glass p-3 rounded-xl text-2xl" data-icon="💪">💪</button>
+                    <button type="button" onclick="selectGoalIcon('📚')" class="goal-icon glass p-3 rounded-xl text-2xl" data-icon="📚">📚</button>
+                    <button type="button" onclick="selectGoalIcon('💰')" class="goal-icon glass p-3 rounded-xl text-2xl" data-icon="💰">💰</button>
+                    <button type="button" onclick="selectGoalIcon('🏃')" class="goal-icon glass p-3 rounded-xl text-2xl" data-icon="🏃">🏃</button>
+                    <button type="button" onclick="selectGoalIcon('🧘')" class="goal-icon glass p-3 rounded-xl text-2xl" data-icon="🧘">🧘</button>
+                </div>
+            </div>
+            <button onclick="addGoal()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-2xl font-semibold">
+                Создать цель
+            </button>
+        </div>
+    </div>
+
+    <!-- Add Habit Modal -->
+    <div id="addHabitModal" class="fixed bottom-0 left-0 right-0 z-50 hidden">
+        <div class="glass-strong rounded-t-3xl p-6 slide-up">
+            <div class="w-12 h-1 bg-gray-600 rounded-full mx-auto mb-6"></div>
+            <h2 class="text-xl font-bold mb-4">Новая привычка</h2>
+            <input type="text" id="habitName" class="w-full px-4 py-3 rounded-xl mb-4" placeholder="Название привычки">
+            <div class="mb-4">
+                <label class="text-gray-400 text-sm">Иконка</label>
+                <div class="flex gap-2 mt-2 flex-wrap">
+                    <button type="button" onclick="selectHabitIcon('🏋️')" class="habit-icon glass p-3 rounded-xl text-2xl" data-icon="🏋️">🏋️</button>
+                    <button type="button" onclick="selectHabitIcon('📖')" class="habit-icon glass p-3 rounded-xl text-2xl" data-icon="📖">📖</button>
+                    <button type="button" onclick="selectHabitIcon('🧘')" class="habit-icon glass p-3 rounded-xl text-2xl" data-icon="🧘">🧘</button>
+                    <button type="button" onclick="selectHabitIcon('🚶')" class="habit-icon glass p-3 rounded-xl text-2xl" data-icon="🚶">🚶</button>
+                    <button type="button" onclick="selectHabitIcon('💊')" class="habit-icon glass p-3 rounded-xl text-2xl" data-icon="💊">💊</button>
+                    <button type="button" onclick="selectHabitIcon('🎨')" class="habit-icon glass p-3 rounded-xl text-2xl" data-icon="🎨">🎨</button>
+                </div>
+            </div>
+            <button onclick="addHabit()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-2xl font-semibold">
+                Добавить привычку
+            </button>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-5">
+        <div class="glass-strong rounded-3xl p-6 max-w-sm w-full slide-up">
+            <div class="text-center mb-6">
+                <span class="text-5xl mb-4 block">💳</span>
+                <h2 class="text-xl font-bold">Оплата через ЮKassa</h2>
+                <p class="text-gray-400 text-sm mt-2">Вы будете перенаправлены на страницу безопасной оплаты</p>
+            </div>
+            <div class="glass rounded-2xl p-4 mb-6">
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-400">Тариф:</span>
+                    <span id="paymentPlan">Годовой</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-400">Сумма:</span>
+                    <span class="font-bold" id="paymentAmount">2148₽</span>
+                </div>
+            </div>
+            <button onclick="initiateYooKassa()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-2xl font-semibold mb-3">
+                Перейти к оплате
+            </button>
+            <button onclick="closePaymentModal()" class="w-full glass py-3 rounded-2xl">
+                Отмена
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 glass-strong px-6 py-3 rounded-2xl z-50 hidden">
+        <p id="toastMessage">Уведомление</p>
+    </div>
+
+    <script>
+        // App State
+        let state = {
+            user: { name: 'Пользователь' },
+            tasks: [],
+            goals: [],
+            habits: [],
+            water: { current: 0, goal: 8, history: [] },
+            sleep: { records: [] },
+            pomodoro: { 
+                sessions: [], 
+                focusTime: 25, 
+                shortBreak: 5, 
+                longBreak: 15 
+            },
+            streak: 0,
+            selectedGoalIcon: '🎯',
+            selectedHabitIcon: '🏋️',
+            selectedPlan: 'yearly',
+            isPro: false
+        };
+
+        // Timer State
+        let timerState = {
+            mode: 'focus',
+            minutes: 25,
+            seconds: 0,
+            isRunning: false,
+            interval: null
+        };
+
+        let selectedSleepQuality = 3;
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            updateGreeting();
+            updateUI();
+            
+            // Hide splash after 1.5s
+            setTimeout(() => {
+                document.getElementById('splash').style.opacity = '0';
+                document.getElementById('splash').style.transition = 'opacity 0.5s';
+                setTimeout(() => {
+                    document.getElementById('splash').style.display = 'none';
+                }, 500);
+            }, 1500);
+
+            // Request notification permission
+            if ('Notification' in window) {
+                Notification.requestPermission();
+            }
+        });
+
+        // Load/Save State
+        function loadState() {
+            const saved = localStorage.getItem('productivo_state');
+            if (saved) {
+                state = { ...state, ...JSON.parse(saved) };
+            }
+            
+            // Check and reset daily data
+            const today = new Date().toDateString();
+            const lastVisit = localStorage.getItem('productivo_lastVisit');
+            if (lastVisit !== today) {
+                // Reset daily water
+                if (state.water.current > 0) {
+                    state.water.history.push({
+                        date: lastVisit,
+                        amount: state.water.current
+                    });
+                }
+                state.water.current = 0;
+                
+                // Update streak
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                if (lastVisit === yesterday.toDateString()) {
+                    state.streak++;
+                } else if (lastVisit !== today) {
+                    state.streak = 1;
+                }
+                
+                localStorage.setItem('productivo_lastVisit', today);
+            }
+            
+            saveState();
+        }
+
+        function saveState() {
+            localStorage.setItem('productivo_state', JSON.stringify(state));
+        }
+
+        // Update Greeting
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            let greeting = 'Доброй ночи';
+            if (hour >= 5 && hour < 12) greeting = 'Доброе утро';
+            else if (hour >= 12 && hour < 17) greeting = 'Добрый день';
+            else if (hour >= 17 && hour < 22) greeting = 'Добрый вечер';
+            
+            document.getElementById('greeting').textContent = greeting;
+            document.getElementById('userName').textContent = state.user.name;
+        }
+
+        // Update UI
+        function updateUI() {
+            updateGreeting();
+            document.getElementById('streakCount').textContent = state.streak;
+            
+            // Tasks
+            const todayTasks = state.tasks.filter(t => isToday(t.date));
+            const doneTasks = todayTasks.filter(t => t.completed).length;
+            document.getElementById('tasksDone').textContent = doneTasks;
+            document.getElementById('tasksTotal').textContent = todayTasks.length;
+            document.getElementById('tasksProgress').textContent = todayTasks.length > 0 
+                ? Math.round(doneTasks / todayTasks.length * 100) + '%' 
+                : '0%';
+            
+            // Water
+            document.getElementById('waterCurrent').textContent = state.water.current;
+            document.getElementById('waterGoal').textContent = state.water.goal;
+            document.getElementById('waterPercent').textContent = Math.round(state.water.current / state.water.goal * 100) + '%';
+            document.getElementById('waterDisplay').textContent = state.water.current;
+            document.getElementById('waterLevel').style.height = Math.min(100, state.water.current / state.water.goal * 100) + '%';
+            
+            // Sleep
+            if (state.sleep.records.length > 0) {
+                const lastSleep = state.sleep.records[state.sleep.records.length - 1];
+                document.getElementById('lastSleep').textContent = lastSleep.duration + 'ч';
+                document.getElementById('sleepQuality').textContent = getQualityEmoji(lastSleep.quality);
+            }
+            
+            // Focus time
+            const todaySessions = state.pomodoro.sessions.filter(s => isToday(s.date));
+            const totalMinutes = todaySessions.reduce((sum, s) => sum + s.duration, 0);
+            document.getElementById('todayFocus').textContent = `${Math.floor(totalMinutes / 60)}ч ${totalMinutes % 60}м`;
+            
+            // Render lists
+            renderTasks();
+            renderGoals();
+            renderHabits();
+            renderTodayGoals();
+            renderWaterChart();
+            renderSleepHistory();
+            renderAnalytics();
+            renderPomodoroStats();
+            
+            // Settings
+            document.getElementById('settingsName').value = state.user.name;
+            document.getElementById('settingsWaterGoal').value = state.water.goal;
+            document.getElementById('settingsFocus').value = state.pomodoro.focusTime;
+            document.getElementById('settingsShortBreak').value = state.pomodoro.shortBreak;
+            document.getElementById('settingsLongBreak').value = state.pomodoro.longBreak;
+        }
+
+        function isToday(dateStr) {
+            if (!dateStr) return false;
+            return new Date(dateStr).toDateString() === new Date().toDateString();
+        }
+
+        function getQualityEmoji(quality) {
+            const emojis = ['😫', '😕', '😐', '😊', '😴'];
+            return emojis[quality - 1] || '😐';
+        }
+
+        // Navigation
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+            document.getElementById('page-' + pageName).classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            const navItem = document.querySelector(`.nav-item[data-page="${pageName}"]`);
+            if (navItem) navItem.classList.add('active');
+        }
+
+        // Modals
+        function showAddTaskModal() {
+            document.getElementById('modalOverlay').classList.remove('hidden');
+            document.getElementById('addTaskModal').classList.remove('hidden');
+            document.getElementById('taskDate').value = new Date().toISOString().split('T')[0];
+        }
+
+        function showAddGoalModal() {
+            document.getElementById('modalOverlay').classList.remove('hidden');
+            document.getElementById('addGoalModal').classList.remove('hidden');
+        }
+
+        function showAddHabitModal() {
+            document.getElementById('modalOverlay').classList.remove('hidden');
+            document.getElementById('addHabitModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.add('hidden');
+            document.querySelectorAll('[id$="Modal"]').forEach(m => m.classList.add('hidden'));
+        }
+
+        // Tasks
+        function addTask() {
+            const title = document.getElementById('taskTitle').value.trim();
+            if (!title) return showToast('Введите название задачи');
+            
+            state.tasks.push({
+                id: Date.now(),
+                title,
+                description: document.getElementById('taskDescription').value.trim(),
+                date: document.getElementById('taskDate').value,
+                priority: document.getElementById('taskPriority').value,
+                completed: false
+            });
+            
+            saveState();
+            updateUI();
+            closeModal();
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('taskDescription').value = '';
+            showToast('Задача добавлена!');
+        }
+
+        function toggleTask(id) {
+            const task = state.tasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                if (task.completed) {
+                    triggerConfetti();
+                }
+                saveState();
+                updateUI();
+            }
+        }
+
+        function deleteTask(id) {
+            state.tasks = state.tasks.filter(t => t.id !== id);
+            saveState();
+            updateUI();
+            showToast('Задача удалена');
+        }
+
+        function filterTasks(filter) {
+            document.querySelectorAll('.task-filter').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('glass');
+            });
+            document.querySelector(`.task-filter[data-filter="${filter}"]`).classList.add('tab-active');
+            document.querySelector(`.task-filter[data-filter="${filter}"]`).classList.remove('glass');
+            
+            renderTasks(filter);
+        }
+
+        function renderTasks(filter = 'all') {
+            let tasks = [...state.tasks];
+            
+            if (filter === 'today') tasks = tasks.filter(t => isToday(t.date));
+            else if (filter === 'important') tasks = tasks.filter(t => t.priority === 'high');
+            else if (filter === 'completed') tasks = tasks.filter(t => t.completed);
+            else tasks = tasks.filter(t => !t.completed);
+            
+            tasks.sort((a, b) => {
+                const priorityOrder = { high: 0, medium: 1, low: 2 };
+                return priorityOrder[a.priority] - priorityOrder[b.priority];
+            });
+            
+            const container = document.getElementById('tasksList');
+            
+            if (tasks.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">Нет задач</p>';
+                return;
+            }
+            
+            container.innerHTML = tasks.map(task => `
+                <div class="glass rounded-2xl p-4 flex items-start gap-3 bento-card ${task.completed ? 'opacity-60' : ''}">
+                    <button onclick="toggleTask(${task.id})" class="w-6 h-6 rounded-full border-2 ${task.completed ? 'bg-green-500 border-green-500' : 'border-gray-500'} flex items-center justify-center flex-shrink-0 mt-0.5">
+                        ${task.completed ? '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>' : ''}
+                    </button>
+                    <div class="flex-1">
+                        <p class="font-medium ${task.completed ? 'line-through' : ''}">${task.title}</p>
+                        ${task.description ? `<p class="text-gray-400 text-sm mt-1">${task.description}</p>` : ''}
+                        <div class="flex items-center gap-2 mt-2">
+                            <span class="text-xs ${task.priority === 'high' ? 'text-red-400' : task.priority === 'medium' ? 'text-yellow-400' : 'text-gray-400'}">
+                                ${task.priority === 'high' ? '🔴 Важно' : task.priority === 'medium' ? '🟡 Средний' : '🟢 Низкий'}
+                            </span>
+                            ${task.date ? `<span class="text-xs text-gray-500">${new Date(task.date).toLocaleDateString('ru')}</span>` : ''}
+                        </div>
+                    </div>
+                    <button onclick="deleteTask(${task.id})" class="text-gray-500 hover:text-red-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Goals
+        function selectGoalIcon(icon) {
+            state.selectedGoalIcon = icon;
+            document.querySelectorAll('.goal-icon').forEach(b => b.classList.remove('tab-active'));
+            document.querySelector(`.goal-icon[data-icon="${icon}"]`).classList.add('tab-active');
+        }
+
+        function addGoal() {
+            const title = document.getElementById('goalTitle').value.trim();
+            const target = parseInt(document.getElementById('goalTarget').value);
+            
+            if (!title || !target) return showToast('Заполните все поля');
+            
+            state.goals.push({
+                id: Date.now(),
+                title,
+                target,
+                current: 0,
+                unit: document.getElementById('goalUnit').value || 'шт',
+                deadline: document.getElementById('goalDeadline').value,
+                icon: state.selectedGoalIcon,
+                completed: false
+            });
+            
+            saveState();
+            updateUI();
+            closeModal();
+            document.getElementById('goalTitle').value = '';
+            document.getElementById('goalTarget').value = '';
+            showToast('Цель создана!');
+        }
+
+        function updateGoalProgress(id, delta) {
+            const goal = state.goals.find(g => g.id === id);
+            if (goal) {
+                goal.current = Math.max(0, Math.min(goal.target, goal.current + delta));
+                if (goal.current >= goal.target && !goal.completed) {
+                    goal.completed = true;
+                    triggerConfetti();
+                    showToast('🎉 Цель достигнута!');
+                }
+                saveState();
+                updateUI();
+            }
+        }
+
+        function filterGoals(filter) {
+            document.querySelectorAll('.goal-filter').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('glass');
+            });
+            document.querySelector(`.goal-filter[data-filter="${filter}"]`).classList.add('tab-active');
+            document.querySelector(`.goal-filter[data-filter="${filter}"]`).classList.remove('glass');
+            
+            renderGoals(filter);
+        }
+
+        function renderGoals(filter = 'active') {
+            let goals = filter === 'completed' 
+                ? state.goals.filter(g => g.completed)
+                : state.goals.filter(g => !g.completed);
+            
+            const container = document.getElementById('goalsList');
+            
+            if (goals.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">Нет целей</p>';
+                return;
+            }
+            
+            container.innerHTML = goals.map(goal => {
+                const progress = Math.round(goal.current / goal.target * 100);
+                return `
+                    <div class="glass rounded-3xl p-5 bento-card">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-3">
+                                <span class="text-3xl">${goal.icon}</span>
+                                <div>
+                                    <p class="font-semibold">${goal.title}</p>
+                                    <p class="text-gray-400 text-sm">${goal.current}/${goal.target} ${goal.unit}</p>
+                                </div>
+                            </div>
+                            <span class="text-lg font-bold ${progress >= 100 ? 'text-green-400' : 'text-purple-400'}">${progress}%</span>
+                        </div>
+                        <div class="h-2 bg-white/10 rounded-full overflow-hidden mb-3">
+                            <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-500" style="width: ${progress}%"></div>
+                        </div>
+                        ${!goal.completed ? `
+                            <div class="flex gap-2">
+                                <button onclick="updateGoalProgress(${goal.id}, -1)" class="glass flex-1 py-2 rounded-xl">-1</button>
+                                <button onclick="updateGoalProgress(${goal.id}, 1)" class="bg-gradient-to-r from-purple-500 to-pink-500 flex-1 py-2 rounded-xl">+1</button>
+                                <button onclick="updateGoalProgress(${goal.id}, 10)" class="glass flex-1 py-2 rounded-xl">+10</button>
+                            </div>
+                        ` : '<p class="text-center text-green-400">✓ Достигнуто!</p>'}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderTodayGoals() {
+            const goals = state.goals.filter(g => !g.completed).slice(0, 3);
+            const container = document.getElementById('todayGoals');
+            
+            if (goals.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-4">Нет активных целей</p>';
+                return;
+            }
+            
+            container.innerHTML = goals.map(goal => {
+                const progress = Math.round(goal.current / goal.target * 100);
+                return `
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">${goal.icon}</span>
+                        <div class="flex-1">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm">${goal.title}</span>
+                                <span class="text-sm text-gray-400">${progress}%</span>
+                            </div>
+                            <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Habits
+        function selectHabitIcon(icon) {
+            state.selectedHabitIcon = icon;
+            document.querySelectorAll('.habit-icon').forEach(b => b.classList.remove('tab-active'));
+            document.querySelector(`.habit-icon[data-icon="${icon}"]`).classList.add('tab-active');
+        }
+
+        function addHabit() {
+            const name = document.getElementById('habitName').value.trim();
+            if (!name) return showToast('Введите название привычки');
+            
+            state.habits.push({
+                id: Date.now(),
+                name,
+                icon: state.selectedHabitIcon,
+                completedDates: []
+            });
+            
+            saveState();
+            updateUI();
+            closeModal();
+            document.getElementById('habitName').value = '';
+            showToast('Привычка добавлена!');
+        }
+
+        function toggleHabit(id) {
+            const habit = state.habits.find(h => h.id === id);
+            if (habit) {
+                const today = new Date().toDateString();
+                const idx = habit.completedDates.indexOf(today);
+                if (idx > -1) {
+                    habit.completedDates.splice(idx, 1);
+                } else {
+                    habit.completedDates.push(today);
+                }
+                saveState();
+                updateUI();
+            }
+        }
+
+        function renderHabits() {
+            const container = document.getElementById('habitsContainer');
+            
+            if (state.habits.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-4 col-span-4">Нет привычек</p>';
+                return;
+            }
+            
+            const today = new Date().toDateString();
+            container.innerHTML = state.habits.map(habit => {
+                const completed = habit.completedDates.includes(today);
+                return `
+                    <button onclick="toggleHabit(${habit.id})" class="bento-card ${completed ? 'bg-gradient-to-br from-purple-500/30 to-pink-500/30 border border-purple-500/50' : 'glass'} rounded-2xl p-3 flex flex-col items-center">
+                        <span class="text-2xl ${completed ? '' : 'grayscale opacity-50'}">${habit.icon}</span>
+                        <span class="text-xs mt-1 truncate w-full text-center ${completed ? 'text-white' : 'text-gray-400'}">${habit.name}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // Water
+        function addWater(glasses) {
+            state.water.current += glasses;
+            if (state.water.current >= state.water.goal) {
+                showToast('🎉 Дневная норма выполнена!');
+            }
+            saveState();
+            updateUI();
+        }
+
+        function renderWaterChart() {
+            const container = document.getElementById('waterChart');
+            const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+            const today = new Date().getDay();
+            
+            container.innerHTML = days.map((_, i) => {
+                const isToday = i === (today === 0 ? 6 : today - 1);
+                const value = isToday ? state.water.current : Math.floor(Math.random() * state.water.goal);
+                const height = Math.round(value / state.water.goal * 100);
+                return `
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                        <div class="w-full ${isToday ? 'bg-gradient-to-t from-blue-500 to-cyan-400' : 'bg-white/20'} rounded-t-lg transition-all duration-500" style="height: ${height}%"></div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Sleep
+        function setSleepQuality(quality) {
+            selectedSleepQuality = quality;
+            document.querySelectorAll('.sleep-quality').forEach(b => b.classList.remove('tab-active'));
+            document.querySelector(`.sleep-quality[data-quality="${quality}"]`).classList.add('tab-active');
+        }
+
+        function logSleep() {
+            const start = document.getElementById('sleepStart').value;
+            const end = document.getElementById('sleepEnd').value;
+            
+            if (!start || !end) return showToast('Укажите время сна');
+            
+            const startDate = new Date(`2000-01-01 ${start}`);
+            let endDate = new Date(`2000-01-01 ${end}`);
+            if (endDate < startDate) endDate.setDate(endDate.getDate() + 1);
+            
+            const duration = Math.round((endDate - startDate) / 1000 / 60 / 60 * 10) / 10;
+            
+            state.sleep.records.push({
+                date: new Date().toISOString(),
+                start,
+                end,
+                duration,
+                quality: selectedSleepQuality
+            });
+            
+            saveState();
+            updateUI();
+            showToast('Сон записан!');
+        }
+
+        function renderSleepHistory() {
+            const container = document.getElementById('sleepHistory');
+            const records = [...state.sleep.records].reverse().slice(0, 7);
+            
+            if (records.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-4">Нет записей</p>';
+                return;
+            }
+            
+            container.innerHTML = records.map(r => `
+                <div class="glass rounded-2xl p-4 flex items-center justify-between">
+                    <div>
+                        <p class="font-medium">${new Date(r.date).toLocaleDateString('ru')}</p>
+                        <p class="text-gray-400 text-sm">${r.start} — ${r.end}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-bold text-purple-400">${r.duration}ч</p>
+                        <p class="text-xl">${getQualityEmoji(r.quality)}</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Update averages
+            if (records.length > 0) {
+                const avgDuration = Math.round(records.reduce((sum, r) => sum + r.duration, 0) / records.length * 10) / 10;
+                const avgQuality = Math.round(records.reduce((sum, r) => sum + r.quality, 0) / records.length);
+                document.getElementById('avgSleep').textContent = avgDuration + 'ч';
+                document.getElementById('avgQuality').textContent = getQualityEmoji(avgQuality);
+            }
+        }
+
+        // Pomodoro
+        function setTimerMode(mode) {
+            timerState.mode = mode;
+            document.querySelectorAll('.timer-mode').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('glass');
+            });
+            document.querySelector(`.timer-mode[data-mode="${mode}"]`).classList.add('tab-active');
+            document.querySelector(`.timer-mode[data-mode="${mode}"]`).classList.remove('glass');
+            
+            const durations = {
+                focus: state.pomodoro.focusTime,
+                short: state.pomodoro.shortBreak,
+                long: state.pomodoro.longBreak
+            };
+            const labels = { focus: 'Фокус', short: 'Короткий перерыв', long: 'Длинный перерыв' };
+            
+            timerState.minutes = durations[mode];
+            timerState.seconds = 0;
+            timerState.isRunning = false;
+            clearInterval(timerState.interval);
+            
+            updateTimerDisplay();
+            document.getElementById('timerLabel').textContent = labels[mode];
+            document.getElementById('playIcon').classList.remove('hidden');
+            document.getElementById('pauseIcon').classList.add('hidden');
+        }
+
+        function updateTimerDisplay() {
+            const display = `${timerState.minutes.toString().padStart(2, '0')}:${timerState.seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').textContent = display;
+            
+            const totalSeconds = timerState.mode === 'focus' ? state.pomodoro.focusTime * 60 :
+                                 timerState.mode === 'short' ? state.pomodoro.shortBreak * 60 : state.pomodoro.longBreak * 60;
+            const currentSeconds = timerState.minutes * 60 + timerState.seconds;
+            const progress = (1 - currentSeconds / totalSeconds) * 816.81;
+            document.getElementById('timerProgress').style.strokeDashoffset = progress;
+        }
+
+        function toggleTimer() {
+            if (timerState.isRunning) {
+                timerState.isRunning = false;
+                clearInterval(timerState.interval);
+                document.getElementById('playIcon').classList.remove('hidden');
+                document.getElementById('pauseIcon').classList.add('hidden');
+            } else {
+                timerState.isRunning = true;
+                document.getElementById('playIcon').classList.add('hidden');
+                document.getElementById('pauseIcon').classList.remove('hidden');
+                
+                timerState.interval = setInterval(() => {
+                    if (timerState.seconds === 0) {
+                        if (timerState.minutes === 0) {
+                            completeTimer();
+                            return;
+                        }
+                        timerState.minutes--;
+                        timerState.seconds = 59;
+                    } else {
+                        timerState.seconds--;
+                    }
+                    updateTimerDisplay();
+                }, 1000);
+            }
+        }
+
+        function resetTimer() {
+            setTimerMode(timerState.mode);
+        }
+
+        function skipTimer() {
+            completeTimer();
+        }
+
+        function completeTimer() {
+            clearInterval(timerState.interval);
+            timerState.isRunning = false;
+            
+            if (timerState.mode === 'focus') {
+                state.pomodoro.sessions.push({
+                    date: new Date().toISOString(),
+                    duration: state.pomodoro.focusTime
+                });
+                saveState();
+                showToast('🎉 Сессия завершена!');
+                triggerConfetti();
+                
+                // Notify
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    new Notification('Productivo', { body: 'Время для перерыва!' });
+                }
+                
+                setTimerMode('short');
+            } else {
+                setTimerMode('focus');
+            }
+            
+            updateUI();
+        }
+
+        function renderPomodoroStats() {
+            const today = state.pomodoro.sessions.filter(s => isToday(s.date));
+            const week = state.pomodoro.sessions.filter(s => {
+                const d = new Date(s.date);
+                const now = new Date();
+                const weekAgo = new Date(now.setDate(now.getDate() - 7));
+                return d > weekAgo;
+            });
+            
+            document.getElementById('todaySessions').textContent = today.length;
+            document.getElementById('weekSessions').textContent = week.length;
+            document.getElementById('totalSessions').textContent = state.pomodoro.sessions.length;
+        }
+
+        // Analytics
+        function setAnalyticsPeriod(period) {
+            document.querySelectorAll('.analytics-period').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('glass');
+            });
+            document.querySelector(`.analytics-period[data-period="${period}"]`).classList.add('tab-active');
+            document.querySelector(`.analytics-period[data-period="${period}"]`).classList.remove('glass');
+            renderAnalytics(period);
+        }
+
+        function renderAnalytics(period = 'week') {
+            const completedTasks = state.tasks.filter(t => t.completed).length;
+            const focusMinutes = state.pomodoro.sessions.reduce((sum, s) => sum + s.duration, 0);
+            const avgSleep = state.sleep.records.length > 0 
+                ? Math.round(state.sleep.records.reduce((sum, r) => sum + r.duration, 0) / state.sleep.records.length * 10) / 10
+                : 0;
+            
+            document.getElementById('analyticsTasksCompleted').textContent = completedTasks;
+            document.getElementById('analyticsFocusTime').textContent = `${Math.floor(focusMinutes / 60)}ч`;
+            document.getElementById('analyticsAvgSleep').textContent = `${avgSleep}ч`;
+            document.getElementById('analyticsStreak').textContent = state.streak;
+            
+            // Productivity chart
+            const chart = document.getElementById('productivityChart');
+            const days = period === 'week' ? 7 : period === 'month' ? 30 : 12;
+            chart.innerHTML = Array(days).fill(0).map((_, i) => {
+                const height = Math.floor(Math.random() * 80) + 20;
+                return `<div class="flex-1 bg-gradient-to-t from-purple-500 to-pink-500 rounded-t opacity-${30 + i * 10}" style="height: ${height}%"></div>`;
+            }).join('');
+        }
+
+        // Subscription
+        function selectPlan(plan) {
+            state.selectedPlan = plan;
+            document.querySelectorAll('.subscription-option').forEach(o => {
+                o.classList.remove('selected', 'gradient-border');
+                o.classList.add('glass');
+            });
+            const selected = document.querySelector(`.subscription-option[data-plan="${plan}"]`);
+            selected.classList.add('selected', 'gradient-border');
+            selected.classList.remove('glass');
+            
+            document.getElementById('priceDisplay').textContent = plan === 'yearly' ? '2148₽/год' : '299₽/месяц';
+        }
+
+        function processPayment() {
+            document.getElementById('paymentModal').classList.remove('hidden');
+            document.getElementById('modalOverlay').classList.remove('hidden');
+            
+            document.getElementById('paymentPlan').textContent = state.selectedPlan === 'yearly' ? 'Годовой' : 'Месячный';
+            document.getElementById('paymentAmount').textContent = state.selectedPlan === 'yearly' ? '2148₽' : '299₽';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.add('hidden');
+            document.getElementById('modalOverlay').classList.add('hidden');
+        }
+
+        function initiateYooKassa() {
+            // Here would be real YooKassa integration
+            // For demo, we simulate the payment
+            const shopId = 'YOUR_SHOP_ID';
+            const amount = state.selectedPlan === 'yearly' ? '2148.00' : '299.00';
+            
+            // In production, this would redirect to YooKassa
+            // window.location.href = `https://yookassa.ru/checkout/...`;
+            
+            showToast('Перенаправление на ЮKassa...');
+            
+            setTimeout(() => {
+                state.isPro = true;
+                saveState();
+                closePaymentModal();
+                document.getElementById('premiumBanner').style.display = 'none';
+                showToast('🎉 Добро пожаловать в Pro!');
+                triggerConfetti();
+            }, 2000);
+        }
+
+        // Settings
+        function saveSettings() {
+            state.user.name = document.getElementById('settingsName').value || 'Пользователь';
+            state.water.goal = parseInt(document.getElementById('settingsWaterGoal').value) || 8;
+            state.pomodoro.focusTime = parseInt(document.getElementById('settingsFocus').value) || 25;
+            state.pomodoro.shortBreak = parseInt(document.getElementById('settingsShortBreak').value) || 5;
+            state.pomodoro.longBreak = parseInt(document.getElementById('settingsLongBreak').value) || 15;
+            
+            saveState();
+            updateUI();
+            setTimerMode('focus');
+            showToast('Настройки сохранены!');
+        }
+
+        function exportData() {
+            const data = JSON.stringify(state, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'productivo_backup.json';
+            a.click();
+            showToast('Данные экспортированы!');
+        }
+
+        function clearData() {
+            if (confirm('Вы уверены? Все данные будут удалены!')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        // Utilities
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        function triggerConfetti() {
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#ffd700', '#00ff88'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+    </script>
+</body>
+</html>
