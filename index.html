@@ -12,35 +12,65 @@
     <style>
         * { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         ::-webkit-scrollbar { display: none; }
+        
+        /* Dark Theme (default) */
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #1a1a2e;
+            --bg-card: rgba(255,255,255,0.05);
+            --bg-card-solid: #12121a;
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+            --border-color: rgba(255,255,255,0.1);
+        }
+        
+        /* Light Theme */
+        .light-theme {
+            --bg-primary: #f5f5f7;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(0,0,0,0.03);
+            --bg-card-solid: #ffffff;
+            --text-primary: #1a1a2e;
+            --text-secondary: #6b7280;
+            --border-color: rgba(0,0,0,0.1);
+        }
+        
         body { 
-            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+            color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
             touch-action: pan-y;
         }
         
-        /* Solid dark menus */
+        .light-theme body,
+        body.light-theme {
+            background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 50%, #f5f5f7 100%);
+        }
+        
         .header-solid {
-            background: rgba(10, 10, 15, 0.95);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: var(--bg-card-solid);
+            border-bottom: 1px solid var(--border-color);
             backdrop-filter: blur(20px);
         }
         .nav-solid {
-            background: rgba(10, 10, 15, 0.98);
-            border-top: 1px solid rgba(255,255,255,0.08);
+            background: var(--bg-card-solid);
+            border-top: 1px solid var(--border-color);
             backdrop-filter: blur(20px);
         }
         
         .glass { 
-            background: rgba(255,255,255,0.05); 
+            background: var(--bg-card); 
             backdrop-filter: blur(20px); 
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--border-color);
         }
         .glass-dark {
-            background: rgba(0,0,0,0.4);
+            background: var(--bg-card);
             backdrop-filter: blur(30px);
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid var(--border-color);
         }
+        .text-secondary { color: var(--text-secondary); }
+        
         .gradient-text {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             -webkit-background-clip: text;
@@ -81,6 +111,7 @@
         .tab-active { 
             background: linear-gradient(135deg, #667eea, #764ba2);
             box-shadow: 0 4px 15px rgba(102,126,234,0.3);
+            color: white !important;
         }
         .slide-up { animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         @keyframes slideUp {
@@ -93,9 +124,9 @@
             to { transform: scale(1.1) rotate(5deg); }
         }
         input, textarea, select {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: white;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
         }
         input:focus, textarea:focus, select:focus {
             outline: none;
@@ -115,7 +146,6 @@
             border-radius: 50%;
         }
         
-        /* Swipe indicator */
         .swipe-indicator {
             position: fixed;
             left: 0;
@@ -131,19 +161,10 @@
         }
         .swipe-indicator.visible { opacity: 1; }
         
-        /* Energy badges */
-        .energy-high { background: linear-gradient(135deg, #10b981, #059669); }
-        .energy-medium { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .energy-low { background: linear-gradient(135deg, #6b7280, #4b5563); }
-        
-        /* Mode badges */
-        .mode-work { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-        .mode-sport { background: linear-gradient(135deg, #10b981, #059669); }
-        .mode-rest { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-        .mode-recovery { background: linear-gradient(135deg, #ec4899, #db2777); }
-        
-        /* Strict mode */
-        .strict-mode { border: 2px solid #ef4444 !important; }
+        .water-fill {
+            background: linear-gradient(180deg, #38bdf8, #0284c7);
+            transition: height 0.5s ease;
+        }
         
         .confetti {
             position: fixed;
@@ -157,25 +178,45 @@
             100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
         
-        /* Page transitions */
-        .page { 
-            transition: transform 0.3s ease, opacity 0.3s ease;
+        .kanban-col {
+            min-height: 200px;
         }
-        .page.slide-out-left {
-            transform: translateX(-100%);
-            opacity: 0;
+        
+        .calendar-day {
+            aspect-ratio: 1;
         }
-        .page.slide-in-right {
-            animation: slideInRight 0.3s ease forwards;
+        .calendar-day.has-tasks::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: #667eea;
+            border-radius: 50%;
         }
-        @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        .calendar-day.today {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
         }
+        .calendar-day.selected {
+            border: 2px solid #667eea;
+        }
+        
+        .habit-quit {
+            background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(185,28,28,0.2));
+            border: 1px solid rgba(239,68,68,0.3);
+        }
+        
+        .sleep-quality-1 { background: #ef4444; }
+        .sleep-quality-2 { background: #f97316; }
+        .sleep-quality-3 { background: #eab308; }
+        .sleep-quality-4 { background: #22c55e; }
+        .sleep-quality-5 { background: #10b981; }
     </style>
 </head>
-<body class="text-white pb-24">
-    <!-- Swipe Back Indicator -->
+<body class="pb-24">
     <div id="swipeIndicator" class="swipe-indicator"></div>
 
     <!-- Ambient Background -->
@@ -184,14 +225,13 @@
         <div class="absolute bottom-40 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl float" style="animation-delay: -3s;"></div>
     </div>
 
-    <!-- Main App -->
     <div id="app" class="relative z-10">
         <!-- Splash Screen -->
-        <div id="splash" class="fixed inset-0 z-50 flex items-center justify-center bg-[#0a0a0f]">
+        <div id="splash" class="fixed inset-0 z-50 flex items-center justify-center" style="background: var(--bg-primary)">
             <div class="text-center">
                 <div class="text-6xl mb-4 float">🚀</div>
                 <h1 class="text-3xl font-bold gradient-text">Productivo</h1>
-                <p class="text-gray-400 mt-2">Умная продуктивность</p>
+                <p class="text-secondary mt-2">Умная продуктивность</p>
                 <div class="mt-6 w-48 h-1 bg-white/10 rounded-full overflow-hidden mx-auto">
                     <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-pulse" style="width: 70%"></div>
                 </div>
@@ -202,45 +242,31 @@
         <header class="sticky top-0 z-40 header-solid px-5 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <button id="backBtn" onclick="goBack()" class="w-10 h-10 rounded-full bg-white/5 items-center justify-center hidden">
+                    <button id="backBtn" onclick="goBack()" class="w-10 h-10 rounded-full glass items-center justify-center hidden">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                         </svg>
                     </button>
                     <div id="headerTitle">
-                        <p class="text-gray-400 text-sm" id="greeting">Доброе утро</p>
+                        <p class="text-secondary text-sm" id="greeting">Доброе утро</p>
                         <h1 class="text-xl font-bold" id="userName">Пользователь</h1>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <!-- Current Mode -->
-                    <button onclick="showModeModal()" id="currentModeBtn" class="mode-work px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1">
-                        <span id="currentModeIcon">💼</span>
-                        <span id="currentModeText">Работа</span>
-                    </button>
-                    <!-- Streak -->
-                    <div class="flex items-center gap-2 bg-white/5 px-3 py-2 rounded-2xl border border-white/10">
+                <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 glass px-3 py-2 rounded-2xl">
                         <span class="streak-fire">🔥</span>
                         <span class="font-semibold" id="streakCount">0</span>
                     </div>
-                    <!-- Settings -->
-                    <button onclick="showPage('settings')" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center border border-white/10">
+                    <button onclick="toggleTheme()" class="w-10 h-10 glass rounded-full flex items-center justify-center">
+                        <span id="themeIcon">🌙</span>
+                    </button>
+                    <button onclick="showPage('settings')" class="w-10 h-10 glass rounded-full flex items-center justify-center">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
                     </button>
                 </div>
-            </div>
-            
-            <!-- Day Overload Warning -->
-            <div id="overloadWarning" class="hidden mt-3 bg-red-500/20 border border-red-500/30 rounded-xl p-3 flex items-center gap-2">
-                <span class="text-xl">⚠️</span>
-                <div class="flex-1">
-                    <p class="text-sm font-medium text-red-400">Ты перегружаешься!</p>
-                    <p class="text-xs text-gray-400">Слишком много задач. Убери лишнее.</p>
-                </div>
-                <button onclick="hideOverloadWarning()" class="text-gray-400">✕</button>
             </div>
         </header>
 
@@ -249,75 +275,42 @@
             
             <!-- ==================== HOME PAGE ==================== -->
             <div id="page-home" class="page">
-                <!-- Energy Level -->
-                <div class="flex gap-2 mb-5">
-                    <button onclick="setEnergy('high')" class="energy-btn flex-1 glass rounded-2xl p-3 text-center bento-card" data-energy="high">
-                        <span class="text-xl">⚡</span>
-                        <p class="text-xs mt-1">Высокая</p>
-                    </button>
-                    <button onclick="setEnergy('medium')" class="energy-btn flex-1 glass rounded-2xl p-3 text-center bento-card" data-energy="medium">
-                        <span class="text-xl">😐</span>
-                        <p class="text-xs mt-1">Средняя</p>
-                    </button>
-                    <button onclick="setEnergy('low')" class="energy-btn flex-1 glass rounded-2xl p-3 text-center bento-card" data-energy="low">
-                        <span class="text-xl">🪫</span>
-                        <p class="text-xs mt-1">Низкая</p>
-                    </button>
-                </div>
-
-                <!-- Quick Stats Bento Grid -->
-                <div class="grid grid-cols-2 gap-3 mb-5">
-                    <div class="bento-card glass-dark rounded-3xl p-4" onclick="showPage('tasks')">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-2xl">✅</span>
-                            <span class="text-xs px-2 py-1 rounded-full bg-green-500/20 text-green-400" id="tasksProgress">0%</span>
-                        </div>
-                        <p class="text-2xl font-bold"><span id="tasksDone">0</span>/<span id="tasksTotal">0</span></p>
-                        <p class="text-gray-400 text-sm">Задачи сегодня</p>
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-4 gap-2 mb-5">
+                    <div class="bento-card glass-dark rounded-2xl p-3 text-center" onclick="showPage('water')">
+                        <span class="text-2xl">💧</span>
+                        <p class="text-xs mt-1" id="homeWater">0%</p>
                     </div>
-                    
-                    <div class="bento-card glass-dark rounded-3xl p-4" onclick="showPage('habits')">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-2xl">🎯</span>
-                            <span class="text-xs px-2 py-1 rounded-full bg-purple-500/20 text-purple-400" id="habitsProgress">0%</span>
-                        </div>
-                        <p class="text-2xl font-bold"><span id="habitsDone">0</span>/<span id="habitsTotal">0</span></p>
-                        <p class="text-gray-400 text-sm">Привычки</p>
+                    <div class="bento-card glass-dark rounded-2xl p-3 text-center" onclick="showPage('sleep')">
+                        <span class="text-2xl">😴</span>
+                        <p class="text-xs mt-1" id="homeSleep">--</p>
                     </div>
-                    
-                    <div class="bento-card glass-dark rounded-3xl p-4" onclick="showPage('pomodoro')">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-2xl">⏱️</span>
-                        </div>
-                        <p class="text-2xl font-bold" id="todayFocus">0ч 0м</p>
-                        <p class="text-gray-400 text-sm">Фокус сегодня</p>
+                    <div class="bento-card glass-dark rounded-2xl p-3 text-center" onclick="showPage('habits')">
+                        <span class="text-2xl">🎯</span>
+                        <p class="text-xs mt-1" id="homeHabits">0%</p>
                     </div>
-                    
-                    <div class="bento-card glass-dark rounded-3xl p-4" onclick="showPage('mood')">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-2xl" id="currentMoodEmoji">😐</span>
-                        </div>
-                        <p class="text-2xl font-bold" id="moodLabel">Нормально</p>
-                        <p class="text-gray-400 text-sm">Настроение</p>
+                    <div class="bento-card glass-dark rounded-2xl p-3 text-center" onclick="showPage('pomodoro')">
+                        <span class="text-2xl">⏱️</span>
+                        <p class="text-xs mt-1" id="homeFocus">0м</p>
                     </div>
                 </div>
 
                 <!-- AI Insight -->
-                <div id="aiInsight" class="gradient-border rounded-3xl p-4 mb-5">
+                <div class="gradient-border rounded-3xl p-4 mb-5">
                     <div class="flex items-start gap-3">
                         <span class="text-2xl">🤖</span>
                         <div class="flex-1">
                             <p class="text-sm font-medium mb-1">Умный совет</p>
-                            <p class="text-gray-300 text-sm" id="aiInsightText">Ты обычно продуктивен утром. Начни с важных задач!</p>
+                            <p class="text-secondary text-sm" id="aiInsightText">Ты обычно продуктивен утром. Начни с важных задач!</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Today's Tasks Preview -->
+                <!-- Today's Tasks -->
                 <div class="glass-dark rounded-3xl p-5 mb-5">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="font-semibold text-lg">Задачи на сегодня</h2>
-                        <button onclick="showQuickAddTask()" class="text-purple-400 text-sm flex items-center gap-1">
+                        <button onclick="showAddTaskModal()" class="text-purple-400 text-sm flex items-center gap-1">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                             </svg>
@@ -325,7 +318,7 @@
                         </button>
                     </div>
                     <div id="todayTasksPreview" class="space-y-2">
-                        <p class="text-gray-500 text-center py-4 text-sm">Нет задач на сегодня</p>
+                        <p class="text-secondary text-center py-4 text-sm">Нет задач на сегодня</p>
                     </div>
                     <button onclick="showPage('tasks')" class="w-full mt-3 text-center text-purple-400 text-sm py-2">
                         Все задачи →
@@ -336,23 +329,41 @@
                 <div class="glass-dark rounded-3xl p-5 mb-5">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="font-semibold text-lg">Привычки</h2>
-                        <button onclick="showAddHabitModal()" class="text-purple-400 text-sm">+ Добавить</button>
+                        <button onclick="showPage('habits')" class="text-purple-400 text-sm">Все →</button>
                     </div>
                     <div id="habitsGrid" class="grid grid-cols-4 gap-2">
-                        <p class="text-gray-500 text-center py-4 col-span-4 text-sm">Нет привычек</p>
+                        <p class="text-secondary text-center py-4 col-span-4 text-sm">Нет привычек</p>
                     </div>
                 </div>
 
-                <!-- Quick Pomodoro -->
-                <div class="gradient-border rounded-3xl p-5 mb-5">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h2 class="font-semibold text-lg">Быстрый фокус</h2>
-                            <p class="text-gray-400 text-sm">25 минут концентрации</p>
+                <!-- Water & Sleep Row -->
+                <div class="grid grid-cols-2 gap-3 mb-5">
+                    <div class="glass-dark rounded-3xl p-4 bento-card" onclick="showPage('water')">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-2xl">💧</span>
+                            <span class="text-xs px-2 py-1 rounded-full bg-blue-500/20 text-blue-400" id="waterPercent">0%</span>
                         </div>
-                        <button onclick="showPage('pomodoro')" class="bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 rounded-2xl font-semibold shadow-lg shadow-purple-500/20">
-                            Начать
-                        </button>
+                        <p class="text-2xl font-bold"><span id="waterCurrent">0</span><span class="text-sm text-secondary">/<span id="waterGoal">2000</span>мл</span></p>
+                        <p class="text-secondary text-sm">Вода</p>
+                    </div>
+                    <div class="glass-dark rounded-3xl p-4 bento-card" onclick="showPage('sleep')">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-2xl">😴</span>
+                            <span class="text-xs px-2 py-1 rounded-full bg-purple-500/20 text-purple-400" id="sleepQualityBadge">--</span>
+                        </div>
+                        <p class="text-2xl font-bold" id="lastSleepDuration">--</p>
+                        <p class="text-secondary text-sm">Сон</p>
+                    </div>
+                </div>
+
+                <!-- Projects Preview -->
+                <div class="glass-dark rounded-3xl p-5 mb-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="font-semibold text-lg">Проекты</h2>
+                        <button onclick="showPage('projects')" class="text-purple-400 text-sm">Все →</button>
+                    </div>
+                    <div id="projectsPreview" class="space-y-2">
+                        <p class="text-secondary text-center py-4 text-sm">Нет проектов</p>
                     </div>
                 </div>
             </div>
@@ -361,24 +372,17 @@
             <div id="page-tasks" class="page hidden">
                 <div class="flex items-center justify-between mb-5">
                     <h1 class="text-2xl font-bold">Задачи</h1>
-                    <div class="flex gap-2">
-                        <button onclick="showQuickAddTask()" class="bg-gradient-to-r from-purple-500 to-pink-500 w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/20">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                            </svg>
-                        </button>
-                    </div>
+                    <button onclick="showAddTaskModal()" class="bg-gradient-to-r from-purple-500 to-pink-500 w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                    </button>
                 </div>
 
-                <!-- Task Limit Warning -->
-                <div id="taskLimitBar" class="mb-4">
-                    <div class="flex justify-between text-xs mb-1">
-                        <span class="text-gray-400">Задач на сегодня</span>
-                        <span id="taskLimitText" class="text-gray-400">0/7</span>
-                    </div>
-                    <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                        <div id="taskLimitProgress" class="h-full bg-gradient-to-r from-green-500 to-green-400 rounded-full transition-all" style="width: 0%"></div>
-                    </div>
+                <!-- View Modes -->
+                <div class="flex gap-2 mb-4 overflow-x-auto pb-2">
+                    <button onclick="setTaskView('list')" class="task-view tab-active px-4 py-2 rounded-xl text-sm whitespace-nowrap" data-view="list">📋 Список</button>
+                    <button onclick="setTaskView('kanban')" class="task-view glass px-4 py-2 rounded-xl text-sm whitespace-nowrap" data-view="kanban">📊 Канбан</button>
                 </div>
 
                 <!-- Filter Tabs -->
@@ -389,9 +393,71 @@
                     <button onclick="filterTasks('archive')" class="task-filter glass px-4 py-2 rounded-xl text-sm whitespace-nowrap" data-filter="archive">📦 Архив</button>
                 </div>
 
-                <!-- Tasks List -->
-                <div id="tasksList" class="space-y-3">
-                    <p class="text-gray-500 text-center py-8">Нет задач</p>
+                <!-- Tasks Container -->
+                <div id="tasksContainer">
+                    <div id="tasksList" class="space-y-3">
+                        <p class="text-secondary text-center py-8">Нет задач</p>
+                    </div>
+                    <div id="tasksKanban" class="hidden grid grid-cols-3 gap-3">
+                        <div class="glass-dark rounded-2xl p-3 kanban-col">
+                            <h3 class="font-semibold text-sm mb-3 text-yellow-400">📋 К выполнению</h3>
+                            <div id="kanbanTodo" class="space-y-2"></div>
+                        </div>
+                        <div class="glass-dark rounded-2xl p-3 kanban-col">
+                            <h3 class="font-semibold text-sm mb-3 text-blue-400">🔄 В процессе</h3>
+                            <div id="kanbanProgress" class="space-y-2"></div>
+                        </div>
+                        <div class="glass-dark rounded-2xl p-3 kanban-col">
+                            <h3 class="font-semibold text-sm mb-3 text-green-400">✅ Готово</h3>
+                            <div id="kanbanDone" class="space-y-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== PROJECTS PAGE ==================== -->
+            <div id="page-projects" class="page hidden">
+                <div class="flex items-center justify-between mb-5">
+                    <h1 class="text-2xl font-bold">Проекты</h1>
+                    <button onclick="showAddProjectModal()" class="bg-gradient-to-r from-purple-500 to-pink-500 w-12 h-12 rounded-2xl flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="projectsList" class="space-y-4">
+                    <p class="text-secondary text-center py-8">Нет проектов</p>
+                </div>
+            </div>
+
+            <!-- ==================== CALENDAR PAGE ==================== -->
+            <div id="page-calendar" class="page hidden">
+                <div class="flex items-center justify-between mb-5">
+                    <h1 class="text-2xl font-bold">Календарь</h1>
+                    <div class="flex gap-1">
+                        <button onclick="setCalendarView('day')" class="cal-view tab-active px-3 py-1.5 rounded-lg text-xs" data-view="day">День</button>
+                        <button onclick="setCalendarView('week')" class="cal-view glass px-3 py-1.5 rounded-lg text-xs" data-view="week">Неделя</button>
+                        <button onclick="setCalendarView('month')" class="cal-view glass px-3 py-1.5 rounded-lg text-xs" data-view="month">Месяц</button>
+                    </div>
+                </div>
+
+                <!-- Date Navigation -->
+                <div class="flex items-center justify-between mb-4">
+                    <button onclick="prevCalendar()" class="glass w-10 h-10 rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <h2 class="text-lg font-semibold" id="calendarTitle">Сегодня</h2>
+                    <button onclick="nextCalendar()" class="glass w-10 h-10 rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div id="calendarContent" class="glass-dark rounded-3xl p-4">
+                    <!-- Generated by JS -->
                 </div>
             </div>
 
@@ -406,51 +472,118 @@
                     </button>
                 </div>
 
-                <!-- Week Stats -->
-                <div class="glass-dark rounded-3xl p-4 mb-5">
-                    <div class="flex justify-between items-end h-20" id="habitWeekChart">
-                        <!-- Generated by JS -->
-                    </div>
-                    <div class="flex justify-between mt-2 text-xs text-gray-400">
-                        <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
-                    </div>
+                <!-- Habit Tabs -->
+                <div class="flex gap-2 mb-5">
+                    <button onclick="filterHabits('all')" class="habit-filter tab-active px-4 py-2 rounded-xl text-sm" data-filter="all">Все</button>
+                    <button onclick="filterHabits('positive')" class="habit-filter glass px-4 py-2 rounded-xl text-sm" data-filter="positive">✅ Развивать</button>
+                    <button onclick="filterHabits('quit')" class="habit-filter glass px-4 py-2 rounded-xl text-sm" data-filter="quit">🚫 Бросить</button>
                 </div>
 
-                <!-- Habits List -->
                 <div id="habitsList" class="space-y-3">
-                    <p class="text-gray-500 text-center py-8">Нет привычек</p>
+                    <p class="text-secondary text-center py-8">Нет привычек</p>
                 </div>
             </div>
 
-            <!-- ==================== CALENDAR PAGE ==================== -->
-            <div id="page-calendar" class="page hidden">
-                <div class="flex items-center justify-between mb-5">
-                    <h1 class="text-2xl font-bold">Календарь</h1>
-                    <div class="flex gap-2">
-                        <button onclick="setCalendarView('day')" class="cal-view tab-active px-3 py-1.5 rounded-lg text-sm" data-view="day">День</button>
-                        <button onclick="setCalendarView('week')" class="cal-view glass px-3 py-1.5 rounded-lg text-sm" data-view="week">Неделя</button>
-                        <button onclick="setCalendarView('month')" class="cal-view glass px-3 py-1.5 rounded-lg text-sm" data-view="month">Месяц</button>
+            <!-- ==================== WATER PAGE ==================== -->
+            <div id="page-water" class="page hidden">
+                <h1 class="text-2xl font-bold mb-5 text-center">Трекер воды 💧</h1>
+                
+                <!-- Water Visual -->
+                <div class="relative w-48 h-64 mx-auto mb-6 glass-dark rounded-3xl overflow-hidden">
+                    <div id="waterFillVisual" class="absolute bottom-0 left-0 right-0 water-fill" style="height: 0%"></div>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center z-10">
+                        <span class="text-4xl font-bold" id="waterAmount">0</span>
+                        <span class="text-secondary">/ <span id="waterTarget">2000</span> мл</span>
                     </div>
                 </div>
 
-                <!-- Date Navigation -->
-                <div class="flex items-center justify-between mb-4">
-                    <button onclick="prevDate()" class="glass w-10 h-10 rounded-full flex items-center justify-center">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                        </svg>
+                <!-- Quick Add Buttons -->
+                <div class="grid grid-cols-4 gap-2 mb-6">
+                    <button onclick="addWater(150)" class="glass rounded-2xl p-3 text-center bento-card">
+                        <span class="text-xl">🥤</span>
+                        <p class="text-xs mt-1">150мл</p>
                     </button>
-                    <h2 class="text-lg font-semibold" id="calendarTitle">Сегодня</h2>
-                    <button onclick="nextDate()" class="glass w-10 h-10 rounded-full flex items-center justify-center">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
+                    <button onclick="addWater(250)" class="glass rounded-2xl p-3 text-center bento-card">
+                        <span class="text-xl">🥛</span>
+                        <p class="text-xs mt-1">250мл</p>
+                    </button>
+                    <button onclick="addWater(500)" class="glass rounded-2xl p-3 text-center bento-card">
+                        <span class="text-xl">🍶</span>
+                        <p class="text-xs mt-1">500мл</p>
+                    </button>
+                    <button onclick="addWater(1000)" class="glass rounded-2xl p-3 text-center bento-card">
+                        <span class="text-xl">🫗</span>
+                        <p class="text-xs mt-1">1л</p>
                     </button>
                 </div>
 
-                <!-- Timeline -->
-                <div id="calendarContent" class="glass-dark rounded-3xl p-4">
-                    <!-- Generated by JS -->
+                <!-- Custom Amount -->
+                <div class="glass-dark rounded-2xl p-4 mb-5">
+                    <div class="flex gap-2">
+                        <input type="number" id="customWater" class="flex-1 px-4 py-3 rounded-xl" placeholder="Свое количество">
+                        <button onclick="addCustomWater()" class="bg-gradient-to-r from-blue-500 to-cyan-500 px-6 rounded-xl font-semibold">+</button>
+                    </div>
+                </div>
+
+                <!-- Water History -->
+                <div class="glass-dark rounded-3xl p-5">
+                    <h3 class="font-semibold mb-3">История за неделю</h3>
+                    <div id="waterHistory" class="flex justify-between items-end h-24">
+                        <!-- Generated -->
+                    </div>
+                    <div class="flex justify-between mt-2 text-xs text-secondary">
+                        <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== SLEEP PAGE ==================== -->
+            <div id="page-sleep" class="page hidden">
+                <h1 class="text-2xl font-bold mb-5 text-center">Трекер сна 😴</h1>
+                
+                <!-- Last Night -->
+                <div class="glass-dark rounded-3xl p-5 mb-5 text-center">
+                    <p class="text-secondary text-sm mb-2">Прошлая ночь</p>
+                    <p class="text-4xl font-bold mb-2" id="sleepDuration">--</p>
+                    <div class="flex justify-center gap-1" id="sleepQualityStars">
+                        <span class="text-2xl">⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+
+                <!-- Log Sleep -->
+                <div class="glass-dark rounded-3xl p-5 mb-5">
+                    <h3 class="font-semibold mb-4">Записать сон</h3>
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <div>
+                            <label class="text-secondary text-xs">Лёг спать</label>
+                            <input type="time" id="sleepStart" class="w-full mt-1 px-4 py-3 rounded-xl">
+                        </div>
+                        <div>
+                            <label class="text-secondary text-xs">Проснулся</label>
+                            <input type="time" id="sleepEnd" class="w-full mt-1 px-4 py-3 rounded-xl">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="text-secondary text-xs mb-2 block">Качество сна</label>
+                        <div class="flex gap-2">
+                            <button onclick="setSleepQuality(1)" class="sleep-q flex-1 py-3 rounded-xl glass text-center" data-q="1">😫</button>
+                            <button onclick="setSleepQuality(2)" class="sleep-q flex-1 py-3 rounded-xl glass text-center" data-q="2">😕</button>
+                            <button onclick="setSleepQuality(3)" class="sleep-q flex-1 py-3 rounded-xl glass text-center" data-q="3">😐</button>
+                            <button onclick="setSleepQuality(4)" class="sleep-q flex-1 py-3 rounded-xl glass text-center" data-q="4">😊</button>
+                            <button onclick="setSleepQuality(5)" class="sleep-q flex-1 py-3 rounded-xl glass text-center" data-q="5">🤩</button>
+                        </div>
+                    </div>
+                    <button onclick="saveSleep()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-2xl font-semibold">
+                        Сохранить
+                    </button>
+                </div>
+
+                <!-- Sleep History -->
+                <div class="glass-dark rounded-3xl p-5">
+                    <h3 class="font-semibold mb-3">История сна</h3>
+                    <div id="sleepHistory" class="space-y-2">
+                        <p class="text-secondary text-sm text-center">Нет записей</p>
+                    </div>
                 </div>
             </div>
 
@@ -458,14 +591,12 @@
             <div id="page-pomodoro" class="page hidden">
                 <h1 class="text-2xl font-bold mb-5 text-center">Помодоро</h1>
                 
-                <!-- Timer Modes -->
                 <div class="flex gap-2 justify-center mb-6">
                     <button onclick="setTimerMode('focus')" class="timer-mode tab-active px-4 py-2 rounded-xl text-sm" data-mode="focus">Фокус</button>
                     <button onclick="setTimerMode('short')" class="timer-mode glass px-4 py-2 rounded-xl text-sm" data-mode="short">Короткий</button>
                     <button onclick="setTimerMode('long')" class="timer-mode glass px-4 py-2 rounded-xl text-sm" data-mode="long">Длинный</button>
                 </div>
 
-                <!-- Timer Circle -->
                 <div class="relative w-64 h-64 mx-auto mb-6">
                     <svg class="w-full h-full progress-ring">
                         <circle cx="128" cy="128" r="115" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="10"/>
@@ -479,46 +610,31 @@
                     </svg>
                     <div class="absolute inset-0 flex flex-col items-center justify-center">
                         <span id="timerDisplay" class="text-5xl font-bold">25:00</span>
-                        <span id="timerLabel" class="text-gray-400 mt-2">Фокус</span>
+                        <span id="timerLabel" class="text-secondary mt-2">Фокус</span>
                     </div>
                 </div>
 
-                <!-- Timer Controls -->
                 <div class="flex justify-center gap-4 mb-6">
-                    <button onclick="resetTimer()" class="glass w-14 h-14 rounded-2xl flex items-center justify-center">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                        </svg>
-                    </button>
+                    <button onclick="resetTimer()" class="glass w-14 h-14 rounded-2xl flex items-center justify-center">🔄</button>
                     <button id="timerBtn" onclick="toggleTimer()" class="bg-gradient-to-r from-purple-500 to-pink-500 w-20 h-20 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/30">
-                        <svg id="playIcon" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z"/>
-                        </svg>
-                        <svg id="pauseIcon" class="w-8 h-8 hidden" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
-                        </svg>
+                        <span id="timerIcon">▶️</span>
                     </button>
-                    <button onclick="skipTimer()" class="glass w-14 h-14 rounded-2xl flex items-center justify-center">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
-                        </svg>
-                    </button>
+                    <button onclick="skipTimer()" class="glass w-14 h-14 rounded-2xl flex items-center justify-center">⏭️</button>
                 </div>
 
-                <!-- Today's Sessions -->
                 <div class="glass-dark rounded-3xl p-5">
                     <div class="grid grid-cols-3 gap-4 text-center">
                         <div>
                             <p class="text-2xl font-bold text-purple-400" id="todaySessions">0</p>
-                            <p class="text-gray-400 text-xs">Сегодня</p>
+                            <p class="text-secondary text-xs">Сегодня</p>
                         </div>
                         <div>
                             <p class="text-2xl font-bold text-pink-400" id="weekSessions">0</p>
-                            <p class="text-gray-400 text-xs">Неделя</p>
+                            <p class="text-secondary text-xs">Неделя</p>
                         </div>
                         <div>
-                            <p class="text-2xl font-bold text-blue-400" id="totalSessions">0</p>
-                            <p class="text-gray-400 text-xs">Всего</p>
+                            <p class="text-2xl font-bold text-blue-400" id="totalMinutes">0ч</p>
+                            <p class="text-secondary text-xs">Всего</p>
                         </div>
                     </div>
                 </div>
@@ -534,127 +650,62 @@
                         </svg>
                     </button>
                 </div>
-
-                <!-- Journal Entries -->
                 <div id="journalList" class="space-y-4">
-                    <p class="text-gray-500 text-center py-8">Нет записей</p>
+                    <p class="text-secondary text-center py-8">Нет записей</p>
                 </div>
-            </div>
-
-            <!-- ==================== MOOD PAGE ==================== -->
-            <div id="page-mood" class="page hidden">
-                <h1 class="text-2xl font-bold mb-5 text-center">Эмоциональный трекер</h1>
-
-                <!-- Current Mood -->
-                <div class="glass-dark rounded-3xl p-6 mb-5 text-center">
-                    <p class="text-gray-400 text-sm mb-3">Как ты себя чувствуешь?</p>
-                    <div class="flex justify-center gap-3 mb-4">
-                        <button onclick="setMood(1)" class="mood-btn text-3xl p-2 rounded-xl transition-transform" data-mood="1">😫</button>
-                        <button onclick="setMood(2)" class="mood-btn text-3xl p-2 rounded-xl transition-transform" data-mood="2">😕</button>
-                        <button onclick="setMood(3)" class="mood-btn text-3xl p-2 rounded-xl transition-transform" data-mood="3">😐</button>
-                        <button onclick="setMood(4)" class="mood-btn text-3xl p-2 rounded-xl transition-transform" data-mood="4">😊</button>
-                        <button onclick="setMood(5)" class="mood-btn text-3xl p-2 rounded-xl transition-transform" data-mood="5">🤩</button>
-                    </div>
-                </div>
-
-                <!-- Energy Sources -->
-                <div class="glass-dark rounded-3xl p-5 mb-5">
-                    <h3 class="font-semibold mb-3">Что давало энергию?</h3>
-                    <div class="flex flex-wrap gap-2" id="energySources">
-                        <button onclick="toggleEnergySource('sleep')" class="energy-source glass px-3 py-2 rounded-xl text-sm" data-source="sleep">😴 Сон</button>
-                        <button onclick="toggleEnergySource('sport')" class="energy-source glass px-3 py-2 rounded-xl text-sm" data-source="sport">🏃 Спорт</button>
-                        <button onclick="toggleEnergySource('food')" class="energy-source glass px-3 py-2 rounded-xl text-sm" data-source="food">🍎 Еда</button>
-                        <button onclick="toggleEnergySource('people')" class="energy-source glass px-3 py-2 rounded-xl text-sm" data-source="people">👥 Люди</button>
-                        <button onclick="toggleEnergySource('nature')" class="energy-source glass px-3 py-2 rounded-xl text-sm" data-source="nature">🌳 Природа</button>
-                        <button onclick="toggleEnergySource('music')" class="energy-source glass px-3 py-2 rounded-xl text-sm" data-source="music">🎵 Музыка</button>
-                    </div>
-                </div>
-
-                <!-- Energy Drains -->
-                <div class="glass-dark rounded-3xl p-5 mb-5">
-                    <h3 class="font-semibold mb-3">Что высасывало энергию?</h3>
-                    <div class="flex flex-wrap gap-2" id="energyDrains">
-                        <button onclick="toggleEnergyDrain('stress')" class="energy-drain glass px-3 py-2 rounded-xl text-sm" data-drain="stress">😰 Стресс</button>
-                        <button onclick="toggleEnergyDrain('work')" class="energy-drain glass px-3 py-2 rounded-xl text-sm" data-drain="work">💼 Работа</button>
-                        <button onclick="toggleEnergyDrain('social')" class="energy-drain glass px-3 py-2 rounded-xl text-sm" data-drain="social">📱 Соцсети</button>
-                        <button onclick="toggleEnergyDrain('conflict')" class="energy-drain glass px-3 py-2 rounded-xl text-sm" data-drain="conflict">😤 Конфликты</button>
-                        <button onclick="toggleEnergyDrain('nosleep')" class="energy-drain glass px-3 py-2 rounded-xl text-sm" data-drain="nosleep">😵 Недосып</button>
-                    </div>
-                </div>
-
-                <button onclick="saveMoodEntry()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-2xl font-semibold">
-                    Сохранить
-                </button>
             </div>
 
             <!-- ==================== ANALYTICS PAGE ==================== -->
             <div id="page-analytics" class="page hidden">
                 <h1 class="text-2xl font-bold mb-5">Аналитика</h1>
 
-                <!-- Period Selector -->
                 <div class="flex gap-2 mb-5">
                     <button onclick="setAnalyticsPeriod('week')" class="analytics-period tab-active px-4 py-2 rounded-xl text-sm" data-period="week">Неделя</button>
                     <button onclick="setAnalyticsPeriod('month')" class="analytics-period glass px-4 py-2 rounded-xl text-sm" data-period="month">Месяц</button>
+                    <button onclick="setAnalyticsPeriod('year')" class="analytics-period glass px-4 py-2 rounded-xl text-sm" data-period="year">Год</button>
                 </div>
 
-                <!-- Stats Grid -->
                 <div class="grid grid-cols-2 gap-3 mb-5">
                     <div class="glass-dark rounded-3xl p-4">
-                        <p class="text-gray-400 text-xs">Выполнено задач</p>
+                        <p class="text-secondary text-xs">Выполнено задач</p>
                         <p class="text-2xl font-bold text-green-400" id="analyticsTasksDone">0</p>
                     </div>
                     <div class="glass-dark rounded-3xl p-4">
-                        <p class="text-gray-400 text-xs">Привычки</p>
+                        <p class="text-secondary text-xs">Привычки</p>
                         <p class="text-2xl font-bold text-purple-400" id="analyticsHabitsPercent">0%</p>
                     </div>
                     <div class="glass-dark rounded-3xl p-4">
-                        <p class="text-gray-400 text-xs">Фокус-время</p>
+                        <p class="text-secondary text-xs">Фокус-время</p>
                         <p class="text-2xl font-bold text-blue-400" id="analyticsFocusTime">0ч</p>
                     </div>
                     <div class="glass-dark rounded-3xl p-4">
-                        <p class="text-gray-400 text-xs">Streak</p>
-                        <p class="text-2xl font-bold text-orange-400" id="analyticsStreak">0</p>
+                        <p class="text-secondary text-xs">Вода (среднее)</p>
+                        <p class="text-2xl font-bold text-cyan-400" id="analyticsWater">0мл</p>
                     </div>
                 </div>
 
-                <!-- Vegetable Days -->
+                <!-- Weekly Chart -->
                 <div class="glass-dark rounded-3xl p-5 mb-5">
-                    <h3 class="font-semibold mb-3">🥒 Дни-овощи</h3>
-                    <p class="text-gray-400 text-sm mb-2">Дни с низкой продуктивностью</p>
-                    <p class="text-3xl font-bold text-red-400" id="vegetableDays">0</p>
-                </div>
-
-                <!-- Failed Habits -->
-                <div class="glass-dark rounded-3xl p-5 mb-5">
-                    <h3 class="font-semibold mb-3">⚠️ Проваленные привычки</h3>
-                    <div id="failedHabitsList" class="space-y-2">
-                        <p class="text-gray-500 text-sm">Всё под контролем!</p>
+                    <h3 class="font-semibold mb-3">Продуктивность</h3>
+                    <div id="productivityChart" class="flex justify-between items-end h-32">
+                        <!-- Generated -->
+                    </div>
+                    <div class="flex justify-between mt-2 text-xs text-secondary">
+                        <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
                     </div>
                 </div>
 
-                <!-- AI Prediction -->
+                <!-- AI Insights -->
                 <div class="gradient-border rounded-3xl p-5">
                     <div class="flex items-center gap-2 mb-3">
                         <span class="text-xl">🔮</span>
-                        <h3 class="font-semibold">Прогноз</h3>
+                        <h3 class="font-semibold">AI Инсайты</h3>
                     </div>
-                    <p class="text-gray-300 text-sm" id="aiPrediction">Продолжай в том же духе! Вероятность выполнения целей на этой неделе — 78%.</p>
-                </div>
-            </div>
-
-            <!-- ==================== GOALS PAGE ==================== -->
-            <div id="page-goals" class="page hidden">
-                <div class="flex items-center justify-between mb-5">
-                    <h1 class="text-2xl font-bold">Цели</h1>
-                    <button onclick="showAddGoalModal()" class="bg-gradient-to-r from-purple-500 to-pink-500 w-12 h-12 rounded-2xl flex items-center justify-center">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                        </svg>
-                    </button>
-                </div>
-
-                <div id="goalsList" class="space-y-4">
-                    <p class="text-gray-500 text-center py-8">Нет целей</p>
+                    <div id="aiInsights" class="space-y-2 text-sm text-secondary">
+                        <p>• Твоя лучшая продуктивность по вторникам</p>
+                        <p>• Ты чаще срываешь привычку "Медитация"</p>
+                        <p>• Рекомендуем добавить 1 перерыв в 15:00</p>
+                    </div>
                 </div>
             </div>
 
@@ -662,46 +713,49 @@
             <div id="page-settings" class="page hidden">
                 <h1 class="text-2xl font-bold mb-5">Настройки</h1>
 
-                <!-- Profile -->
                 <div class="glass-dark rounded-3xl p-5 mb-4">
                     <h3 class="font-semibold mb-4">Профиль</h3>
                     <input type="text" id="settingsName" class="w-full px-4 py-3 rounded-xl mb-3" placeholder="Имя">
                 </div>
 
-                <!-- Mode Settings -->
                 <div class="glass-dark rounded-3xl p-5 mb-4">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold">Режим «Жёсткий дед» 👴</h3>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="strictMode" class="sr-only peer" onchange="toggleStrictMode()">
-                            <div class="w-11 h-6 bg-gray-700 rounded-full peer peer-checked:bg-red-500 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
-                        </label>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold">Тема оформления</h3>
+                            <p class="text-secondary text-sm">Светлая / Тёмная</p>
+                        </div>
+                        <button onclick="toggleTheme()" class="glass px-4 py-2 rounded-xl" id="themeToggleBtn">🌙 Тёмная</button>
                     </div>
-                    <p class="text-gray-400 text-sm">Ограничение задач, запрет переноса, жёсткие фразы</p>
                 </div>
 
-                <!-- Task Limit -->
                 <div class="glass-dark rounded-3xl p-5 mb-4">
-                    <h3 class="font-semibold mb-3">Лимит задач на день</h3>
-                    <input type="range" id="taskLimitSetting" min="3" max="10" value="7" class="w-full" oninput="updateTaskLimitDisplay()">
-                    <p class="text-center text-lg font-bold mt-2" id="taskLimitDisplay">7 задач</p>
-                </div>
-
-                <!-- Pomodoro Settings -->
-                <div class="glass-dark rounded-3xl p-5 mb-4">
-                    <h3 class="font-semibold mb-4">Помодоро</h3>
+                    <h3 class="font-semibold mb-4">Цели</h3>
                     <div class="space-y-3">
                         <div>
-                            <label class="text-gray-400 text-sm">Фокус (мин)</label>
-                            <input type="number" id="settingsFocus" class="w-full mt-1 px-4 py-3 rounded-xl" value="25">
+                            <label class="text-secondary text-sm">Вода в день (мл)</label>
+                            <input type="number" id="settingsWaterGoal" class="w-full mt-1 px-4 py-3 rounded-xl" value="2000">
                         </div>
                         <div>
-                            <label class="text-gray-400 text-sm">Короткий перерыв (мин)</label>
-                            <input type="number" id="settingsShortBreak" class="w-full mt-1 px-4 py-3 rounded-xl" value="5">
+                            <label class="text-secondary text-sm">Цель сна (часов)</label>
+                            <input type="number" id="settingsSleepGoal" class="w-full mt-1 px-4 py-3 rounded-xl" value="8">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-dark rounded-3xl p-5 mb-4">
+                    <h3 class="font-semibold mb-4">Помодоро (минуты)</h3>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="text-secondary text-xs">Фокус</label>
+                            <input type="number" id="settingsFocus" class="w-full mt-1 px-3 py-2 rounded-xl" value="25">
                         </div>
                         <div>
-                            <label class="text-gray-400 text-sm">Длинный перерыв (мин)</label>
-                            <input type="number" id="settingsLongBreak" class="w-full mt-1 px-4 py-3 rounded-xl" value="15">
+                            <label class="text-secondary text-xs">Короткий</label>
+                            <input type="number" id="settingsShort" class="w-full mt-1 px-3 py-2 rounded-xl" value="5">
+                        </div>
+                        <div>
+                            <label class="text-secondary text-xs">Длинный</label>
+                            <input type="number" id="settingsLong" class="w-full mt-1 px-3 py-2 rounded-xl" value="15">
                         </div>
                     </div>
                 </div>
@@ -714,6 +768,10 @@
                     👑 Productivo Pro
                 </button>
 
+                <button onclick="exportData()" class="w-full glass py-4 rounded-2xl font-semibold mb-4">
+                    📤 Экспорт данных
+                </button>
+
                 <button onclick="clearData()" class="w-full glass py-4 rounded-2xl font-semibold text-red-400">
                     🗑️ Очистить данные
                 </button>
@@ -724,37 +782,35 @@
                 <div class="text-center mb-8">
                     <span class="text-5xl mb-4 block">👑</span>
                     <h1 class="text-3xl font-bold gradient-text mb-2">Productivo Pro</h1>
-                    <p class="text-gray-400">Раскройте весь потенциал</p>
+                    <p class="text-secondary">Раскройте весь потенциал</p>
                 </div>
 
-                <!-- Features -->
                 <div class="glass-dark rounded-3xl p-5 mb-5">
                     <div class="space-y-3">
                         <div class="flex items-center gap-3"><span class="text-green-400">✓</span><span>AI-аналитика и прогнозы</span></div>
-                        <div class="flex items-center gap-3"><span class="text-green-400">✓</span><span>Безлимитные цели</span></div>
+                        <div class="flex items-center gap-3"><span class="text-green-400">✓</span><span>Безлимитные проекты</span></div>
                         <div class="flex items-center gap-3"><span class="text-green-400">✓</span><span>Умные напоминания</span></div>
-                        <div class="flex items-center gap-3"><span class="text-green-400">✓</span><span>Синхронизация</span></div>
+                        <div class="flex items-center gap-3"><span class="text-green-400">✓</span><span>Облачная синхронизация</span></div>
                         <div class="flex items-center gap-3"><span class="text-green-400">✓</span><span>Виджеты</span></div>
                     </div>
                 </div>
 
-                <!-- Pricing -->
                 <div class="space-y-3 mb-5">
                     <div onclick="selectPlan('monthly')" class="sub-option glass-dark rounded-3xl p-5 cursor-pointer" data-plan="monthly">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="font-semibold">Месяц</p>
-                                <p class="text-gray-400 text-sm">Отмена в любое время</p>
+                                <p class="text-secondary text-sm">Отмена в любое время</p>
                             </div>
                             <p class="text-2xl font-bold">299₽</p>
                         </div>
                     </div>
-                    <div onclick="selectPlan('yearly')" class="sub-option gradient-border rounded-3xl p-5 cursor-pointer selected" data-plan="yearly">
+                    <div onclick="selectPlan('yearly')" class="sub-option gradient-border rounded-3xl p-5 cursor-pointer" data-plan="yearly">
                         <div class="absolute -top-2 left-4 bg-gradient-to-r from-yellow-500 to-orange-500 px-2 py-0.5 rounded-full text-xs font-semibold">-40%</div>
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="font-semibold">Год</p>
-                                <p class="text-gray-400 text-sm">179₽/мес</p>
+                                <p class="text-secondary text-sm">179₽/мес</p>
                             </div>
                             <p class="text-2xl font-bold">2148₽</p>
                         </div>
@@ -764,42 +820,40 @@
                 <button onclick="processPayment()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-2xl font-semibold text-lg shadow-lg shadow-purple-500/30">
                     Попробовать 7 дней бесплатно
                 </button>
-                <p class="text-center text-gray-500 text-xs mt-3">Безопасная оплата через ЮKassa</p>
+                <p class="text-center text-secondary text-xs mt-3">Безопасная оплата через ЮKassa</p>
             </div>
         </main>
 
         <!-- Bottom Navigation -->
-        <nav class="fixed bottom-0 left-0 right-0 nav-solid px-4 py-3 z-40">
+        <nav class="fixed bottom-0 left-0 right-0 nav-solid px-2 py-3 z-40">
             <div class="flex justify-between items-center max-w-md mx-auto">
-                <button onclick="showPage('home')" class="nav-item relative flex flex-col items-center px-3 active" data-page="home">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                    </svg>
+                <button onclick="showPage('home')" class="nav-item relative flex flex-col items-center px-2 active" data-page="home">
+                    <span class="text-xl">🏠</span>
                     <span class="text-[10px] mt-1">Главная</span>
                 </button>
-                <button onclick="showPage('calendar')" class="nav-item relative flex flex-col items-center px-3" data-page="calendar">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                    </svg>
+                <button onclick="showPage('tasks')" class="nav-item relative flex flex-col items-center px-2" data-page="tasks">
+                    <span class="text-xl">📋</span>
+                    <span class="text-[10px] mt-1">Задачи</span>
+                </button>
+                <button onclick="showPage('calendar')" class="nav-item relative flex flex-col items-center px-2" data-page="calendar">
+                    <span class="text-xl">📅</span>
                     <span class="text-[10px] mt-1">Календарь</span>
                 </button>
                 <button onclick="showPage('pomodoro')" class="nav-item relative flex flex-col items-center" data-page="pomodoro">
                     <div class="bg-gradient-to-r from-purple-500 to-pink-500 w-14 h-14 rounded-2xl flex items-center justify-center -mt-6 shadow-lg shadow-purple-500/30">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
+                        <span class="text-2xl">⏱️</span>
                     </div>
                 </button>
-                <button onclick="showPage('journal')" class="nav-item relative flex flex-col items-center px-3" data-page="journal">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                    </svg>
+                <button onclick="showPage('habits')" class="nav-item relative flex flex-col items-center px-2" data-page="habits">
+                    <span class="text-xl">🎯</span>
+                    <span class="text-[10px] mt-1">Привычки</span>
+                </button>
+                <button onclick="showPage('journal')" class="nav-item relative flex flex-col items-center px-2" data-page="journal">
+                    <span class="text-xl">📓</span>
                     <span class="text-[10px] mt-1">Журнал</span>
                 </button>
-                <button onclick="showPage('analytics')" class="nav-item relative flex flex-col items-center px-3" data-page="analytics">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                    </svg>
+                <button onclick="showPage('analytics')" class="nav-item relative flex flex-col items-center px-2" data-page="analytics">
+                    <span class="text-xl">📊</span>
                     <span class="text-[10px] mt-1">Статистика</span>
                 </button>
             </div>
@@ -809,34 +863,35 @@
     <!-- ==================== MODALS ==================== -->
     <div id="modalOverlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden" onclick="closeModal()"></div>
 
-    <!-- Quick Add Task Modal -->
-    <div id="quickAddTaskModal" class="fixed bottom-0 left-0 right-0 z-50 hidden">
-        <div class="bg-[#0d0d12] border-t border-white/10 rounded-t-3xl p-6 slide-up">
+    <!-- Add Task Modal -->
+    <div id="addTaskModal" class="fixed bottom-0 left-0 right-0 z-50 hidden">
+        <div class="rounded-t-3xl p-6 slide-up max-h-[85vh] overflow-y-auto" style="background: var(--bg-card-solid)">
             <div class="w-12 h-1 bg-gray-600 rounded-full mx-auto mb-5"></div>
-            <input type="text" id="quickTaskInput" class="w-full px-4 py-4 rounded-xl text-lg mb-4" placeholder="Что нужно сделать?" autofocus>
+            <h2 class="text-xl font-bold mb-4">Новая задача</h2>
             
-            <!-- Priority -->
-            <div class="flex gap-2 mb-4">
+            <input type="text" id="taskTitle" class="w-full px-4 py-4 rounded-xl text-lg mb-3" placeholder="Название задачи">
+            <textarea id="taskDescription" class="w-full px-4 py-3 rounded-xl mb-3 h-20" placeholder="Описание (опционально)"></textarea>
+            
+            <div class="flex gap-2 mb-3">
                 <button onclick="setTaskPriority('low')" class="priority-btn flex-1 glass py-2 rounded-xl text-sm" data-priority="low">🟢 Низкий</button>
                 <button onclick="setTaskPriority('medium')" class="priority-btn flex-1 tab-active py-2 rounded-xl text-sm" data-priority="medium">🟡 Средний</button>
-                <button onclick="setTaskPriority('high')" class="priority-btn flex-1 glass py-2 rounded-xl text-sm" data-priority="high">🔴 Важный</button>
+                <button onclick="setTaskPriority('high')" class="priority-btn flex-1 glass py-2 rounded-xl text-sm" data-priority="high">🔴 Высокий</button>
             </div>
 
-            <!-- Energy Level -->
-            <div class="flex gap-2 mb-4">
-                <button onclick="setTaskEnergy('high')" class="task-energy-btn flex-1 glass py-2 rounded-xl text-sm" data-energy="high">⚡ Высокая</button>
-                <button onclick="setTaskEnergy('medium')" class="task-energy-btn flex-1 glass py-2 rounded-xl text-sm" data-energy="medium">😐 Средняя</button>
-                <button onclick="setTaskEnergy('low')" class="task-energy-btn flex-1 glass py-2 rounded-xl text-sm" data-energy="low">🪫 Низкая</button>
-            </div>
-
-            <!-- Date & Repeat -->
-            <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="grid grid-cols-2 gap-3 mb-3">
                 <div>
-                    <label class="text-gray-400 text-xs">Дата</label>
+                    <label class="text-secondary text-xs">Дата</label>
                     <input type="date" id="taskDate" class="w-full mt-1 px-3 py-2 rounded-xl text-sm">
                 </div>
                 <div>
-                    <label class="text-gray-400 text-xs">Повтор</label>
+                    <label class="text-secondary text-xs">Время</label>
+                    <input type="time" id="taskTime" class="w-full mt-1 px-3 py-2 rounded-xl text-sm">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-3">
+                <div>
+                    <label class="text-secondary text-xs">Повтор</label>
                     <select id="taskRepeat" class="w-full mt-1 px-3 py-2 rounded-xl text-sm">
                         <option value="none">Без повтора</option>
                         <option value="daily">Ежедневно</option>
@@ -845,9 +900,30 @@
                         <option value="monthly">Ежемесячно</option>
                     </select>
                 </div>
+                <div>
+                    <label class="text-secondary text-xs">Проект</label>
+                    <select id="taskProject" class="w-full mt-1 px-3 py-2 rounded-xl text-sm">
+                        <option value="">Без проекта</option>
+                    </select>
+                </div>
             </div>
 
-            <button onclick="addQuickTask()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-2xl font-semibold">
+            <div class="mb-3">
+                <label class="text-secondary text-xs">Ссылка</label>
+                <input type="url" id="taskLink" class="w-full mt-1 px-3 py-2 rounded-xl text-sm" placeholder="https://...">
+            </div>
+
+            <!-- Subtasks -->
+            <div class="mb-4">
+                <label class="text-secondary text-xs mb-2 block">Подзадачи</label>
+                <div id="subtasksList" class="space-y-2 mb-2"></div>
+                <div class="flex gap-2">
+                    <input type="text" id="subtaskInput" class="flex-1 px-3 py-2 rounded-xl text-sm" placeholder="Добавить подзадачу">
+                    <button onclick="addSubtask()" class="glass px-4 rounded-xl">+</button>
+                </div>
+            </div>
+
+            <button onclick="addTask()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-2xl font-semibold">
                 Добавить
             </button>
         </div>
@@ -855,28 +931,28 @@
 
     <!-- Add Habit Modal -->
     <div id="addHabitModal" class="fixed bottom-0 left-0 right-0 z-50 hidden">
-        <div class="bg-[#0d0d12] border-t border-white/10 rounded-t-3xl p-6 slide-up">
+        <div class="rounded-t-3xl p-6 slide-up" style="background: var(--bg-card-solid)">
             <div class="w-12 h-1 bg-gray-600 rounded-full mx-auto mb-5"></div>
             <h2 class="text-xl font-bold mb-4">Новая привычка</h2>
             
             <input type="text" id="habitName" class="w-full px-4 py-3 rounded-xl mb-4" placeholder="Название">
             
-            <!-- Habit Type -->
             <div class="flex gap-2 mb-4">
-                <button onclick="setHabitType('positive')" class="habit-type-btn flex-1 tab-active py-2 rounded-xl text-sm" data-type="positive">✅ Позитивная</button>
-                <button onclick="setHabitType('negative')" class="habit-type-btn flex-1 glass py-2 rounded-xl text-sm" data-type="negative">🚫 Негативная</button>
+                <button onclick="setHabitType('positive')" class="habit-type-btn flex-1 tab-active py-3 rounded-xl text-sm" data-type="positive">✅ Развивать</button>
+                <button onclick="setHabitType('quit')" class="habit-type-btn flex-1 glass py-3 rounded-xl text-sm" data-type="quit">🚫 Бросить</button>
             </div>
             
-            <!-- Icons -->
             <div class="flex gap-2 mb-4 flex-wrap">
                 <button onclick="selectHabitIcon('🏋️')" class="habit-icon glass p-3 rounded-xl text-xl" data-icon="🏋️">🏋️</button>
                 <button onclick="selectHabitIcon('📖')" class="habit-icon glass p-3 rounded-xl text-xl" data-icon="📖">📖</button>
                 <button onclick="selectHabitIcon('🧘')" class="habit-icon glass p-3 rounded-xl text-xl" data-icon="🧘">🧘</button>
                 <button onclick="selectHabitIcon('💊')" class="habit-icon glass p-3 rounded-xl text-xl" data-icon="💊">💊</button>
-                <button onclick="selectHabitIcon('🚭')" class="habit-icon glass p-3 rounded-xl text-xl" data-icon="🚭">🚭</button>
+                <button onclick="selectHabitIcon('🚭')" class="habit-icon tab-active p-3 rounded-xl text-xl" data-icon="🚭">🚭</button>
                 <button onclick="selectHabitIcon('🍺')" class="habit-icon glass p-3 rounded-xl text-xl" data-icon="🍺">🍺</button>
                 <button onclick="selectHabitIcon('💧')" class="habit-icon glass p-3 rounded-xl text-xl" data-icon="💧">💧</button>
                 <button onclick="selectHabitIcon('🚶')" class="habit-icon glass p-3 rounded-xl text-xl" data-icon="🚶">🚶</button>
+                <button onclick="selectHabitIcon('🍎')" class="habit-icon glass p-3 rounded-xl text-xl" data-icon="🍎">🍎</button>
+                <button onclick="selectHabitIcon('📵')" class="habit-icon glass p-3 rounded-xl text-xl" data-icon="📵">📵</button>
             </div>
 
             <button onclick="addHabit()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-2xl font-semibold">
@@ -885,13 +961,44 @@
         </div>
     </div>
 
+    <!-- Add Project Modal -->
+    <div id="addProjectModal" class="fixed bottom-0 left-0 right-0 z-50 hidden">
+        <div class="rounded-t-3xl p-6 slide-up" style="background: var(--bg-card-solid)">
+            <div class="w-12 h-1 bg-gray-600 rounded-full mx-auto mb-5"></div>
+            <h2 class="text-xl font-bold mb-4">Новый проект</h2>
+            
+            <input type="text" id="projectName" class="w-full px-4 py-3 rounded-xl mb-3" placeholder="Название проекта">
+            <textarea id="projectDescription" class="w-full px-4 py-3 rounded-xl mb-3 h-20" placeholder="Описание"></textarea>
+            
+            <div class="flex gap-2 mb-4">
+                <input type="color" id="projectColor" value="#667eea" class="w-12 h-12 rounded-xl cursor-pointer">
+                <input type="date" id="projectDeadline" class="flex-1 px-4 py-3 rounded-xl" placeholder="Дедлайн">
+            </div>
+
+            <button onclick="addProject()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-2xl font-semibold">
+                Создать проект
+            </button>
+        </div>
+    </div>
+
     <!-- Add Journal Modal -->
     <div id="addJournalModal" class="fixed bottom-0 left-0 right-0 z-50 hidden">
-        <div class="bg-[#0d0d12] border-t border-white/10 rounded-t-3xl p-6 slide-up max-h-[80vh] overflow-y-auto">
+        <div class="rounded-t-3xl p-6 slide-up max-h-[80vh] overflow-y-auto" style="background: var(--bg-card-solid)">
             <div class="w-12 h-1 bg-gray-600 rounded-full mx-auto mb-5"></div>
             <h2 class="text-xl font-bold mb-4">Запись в журнал</h2>
             
             <textarea id="journalText" class="w-full px-4 py-3 rounded-xl h-40 mb-4" placeholder="Что у тебя на уме?"></textarea>
+            
+            <div class="mb-4">
+                <p class="text-secondary text-sm mb-2">Настроение</p>
+                <div class="flex gap-2">
+                    <button onclick="setJournalMood(1)" class="journal-mood flex-1 glass py-2 rounded-xl" data-mood="1">😫</button>
+                    <button onclick="setJournalMood(2)" class="journal-mood flex-1 glass py-2 rounded-xl" data-mood="2">😕</button>
+                    <button onclick="setJournalMood(3)" class="journal-mood flex-1 tab-active py-2 rounded-xl" data-mood="3">😐</button>
+                    <button onclick="setJournalMood(4)" class="journal-mood flex-1 glass py-2 rounded-xl" data-mood="4">😊</button>
+                    <button onclick="setJournalMood(5)" class="journal-mood flex-1 glass py-2 rounded-xl" data-mood="5">🤩</button>
+                </div>
+            </div>
             
             <button onclick="addJournalEntry()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-2xl font-semibold">
                 Сохранить
@@ -899,115 +1006,42 @@
         </div>
     </div>
 
-    <!-- Add Goal Modal -->
-    <div id="addGoalModal" class="fixed bottom-0 left-0 right-0 z-50 hidden">
-        <div class="bg-[#0d0d12] border-t border-white/10 rounded-t-3xl p-6 slide-up">
-            <div class="w-12 h-1 bg-gray-600 rounded-full mx-auto mb-5"></div>
-            <h2 class="text-xl font-bold mb-4">Новая цель</h2>
-            
-            <input type="text" id="goalTitle" class="w-full px-4 py-3 rounded-xl mb-3" placeholder="Например: Зарабатывать 200к">
-            
-            <div class="grid grid-cols-2 gap-3 mb-4">
-                <input type="number" id="goalTarget" class="w-full px-4 py-3 rounded-xl" placeholder="Цель">
-                <input type="text" id="goalUnit" class="w-full px-4 py-3 rounded-xl" placeholder="Ед. (₽, кг...)">
-            </div>
-            
-            <input type="date" id="goalDeadline" class="w-full px-4 py-3 rounded-xl mb-4">
-            
-            <button onclick="addGoal()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-2xl font-semibold">
-                Создать цель
-            </button>
-        </div>
-    </div>
-
-    <!-- Mode Selector Modal -->
-    <div id="modeModal" class="fixed bottom-0 left-0 right-0 z-50 hidden">
-        <div class="bg-[#0d0d12] border-t border-white/10 rounded-t-3xl p-6 slide-up">
-            <div class="w-12 h-1 bg-gray-600 rounded-full mx-auto mb-5"></div>
-            <h2 class="text-xl font-bold mb-4">Режим дня</h2>
-            
-            <div class="space-y-3">
-                <button onclick="setMode('work')" class="w-full glass rounded-2xl p-4 flex items-center gap-3 bento-card">
-                    <span class="text-2xl">💼</span>
-                    <div class="text-left">
-                        <p class="font-semibold">Работа</p>
-                        <p class="text-gray-400 text-sm">Фокус на задачах</p>
-                    </div>
-                </button>
-                <button onclick="setMode('sport')" class="w-full glass rounded-2xl p-4 flex items-center gap-3 bento-card">
-                    <span class="text-2xl">🏃</span>
-                    <div class="text-left">
-                        <p class="font-semibold">Спорт</p>
-                        <p class="text-gray-400 text-sm">Активность и тренировки</p>
-                    </div>
-                </button>
-                <button onclick="setMode('rest')" class="w-full glass rounded-2xl p-4 flex items-center gap-3 bento-card">
-                    <span class="text-2xl">🌴</span>
-                    <div class="text-left">
-                        <p class="font-semibold">Выходной</p>
-                        <p class="text-gray-400 text-sm">Отдых и хобби</p>
-                    </div>
-                </button>
-                <button onclick="setMode('recovery')" class="w-full glass rounded-2xl p-4 flex items-center gap-3 bento-card">
-                    <span class="text-2xl">🧘</span>
-                    <div class="text-left">
-                        <p class="font-semibold">Восстановление</p>
-                        <p class="text-gray-400 text-sm">Минимум задач</p>
-                    </div>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Task Detail Modal -->
-    <div id="taskDetailModal" class="fixed bottom-0 left-0 right-0 z-50 hidden">
-        <div class="bg-[#0d0d12] border-t border-white/10 rounded-t-3xl p-6 slide-up max-h-[80vh] overflow-y-auto">
-            <div class="w-12 h-1 bg-gray-600 rounded-full mx-auto mb-5"></div>
-            <div id="taskDetailContent"></div>
-        </div>
-    </div>
-
     <!-- Toast -->
-    <div id="toast" class="fixed top-24 left-1/2 -translate-x-1/2 bg-[#1a1a2e] border border-white/10 px-5 py-3 rounded-2xl z-50 hidden shadow-lg">
+    <div id="toast" class="fixed top-24 left-1/2 -translate-x-1/2 px-5 py-3 rounded-2xl z-50 hidden shadow-lg" style="background: var(--bg-card-solid); border: 1px solid var(--border-color)">
         <p id="toastMessage" class="text-sm">Уведомление</p>
-    </div>
-
-    <!-- Strict Mode Toast -->
-    <div id="strictToast" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-900/90 border-2 border-red-500 px-8 py-6 rounded-3xl z-50 hidden text-center max-w-xs">
-        <p class="text-2xl mb-2">👴</p>
-        <p id="strictMessage" class="font-bold">Хватит ныть. Сделай 1 пункт.</p>
     </div>
 
     <script>
         // ==================== STATE ====================
         let state = {
             user: { name: 'Пользователь' },
+            theme: 'dark',
             tasks: [],
+            projects: [],
             habits: [],
-            goals: [],
             journal: [],
-            mood: [],
+            water: { goal: 2000, history: {} },
+            sleep: { goal: 8, history: [] },
             pomodoro: { sessions: [], focusTime: 25, shortBreak: 5, longBreak: 15 },
-            streak: 0,
-            currentMode: 'work',
-            currentEnergy: 'medium',
-            taskLimit: 7,
-            strictMode: false,
-            selectedPlan: 'yearly'
+            streak: 0
         };
 
-        let timerState = { mode: 'focus', minutes: 25, seconds: 0, isRunning: false, interval: null };
-        let currentTaskPriority = 'medium';
-        let currentTaskEnergy = 'medium';
+        let currentPriority = 'medium';
         let currentHabitType = 'positive';
-        let selectedHabitIcon = '🏋️';
+        let selectedHabitIcon = '🚭';
+        let currentSubtasks = [];
+        let currentSleepQuality = 3;
+        let currentJournalMood = 3;
+        let timerState = { mode: 'focus', minutes: 25, seconds: 0, isRunning: false, interval: null };
+        let calendarView = 'day';
+        let calendarDate = new Date();
         let pageHistory = ['home'];
         let touchStartX = 0;
-        let currentMoodEntry = { mood: 3, sources: [], drains: [] };
 
         // ==================== INIT ====================
         document.addEventListener('DOMContentLoaded', () => {
             loadState();
+            applyTheme();
             updateUI();
             setupSwipeNavigation();
             
@@ -1020,83 +1054,65 @@
         });
 
         function loadState() {
-            const saved = localStorage.getItem('productivo_v2');
+            const saved = localStorage.getItem('productivo_v3');
             if (saved) state = { ...state, ...JSON.parse(saved) };
-            
-            const today = new Date().toDateString();
-            const lastVisit = localStorage.getItem('productivo_lastVisit');
-            
-            if (lastVisit !== today) {
-                // Auto-transfer incomplete tasks
-                state.tasks.forEach(t => {
-                    if (!t.completed && t.date && new Date(t.date) < new Date(today)) {
-                        t.date = new Date().toISOString().split('T')[0];
-                    }
-                });
-                
-                // Update streak
-                const yesterday = new Date();
-                yesterday.setDate(yesterday.getDate() - 1);
-                const hadActivityYesterday = state.tasks.some(t => t.completed && new Date(t.completedDate).toDateString() === yesterday.toDateString());
-                if (hadActivityYesterday) state.streak++;
-                else if (lastVisit !== today) state.streak = 0;
-                
-                localStorage.setItem('productivo_lastVisit', today);
-                saveState();
-            }
         }
 
         function saveState() {
-            localStorage.setItem('productivo_v2', JSON.stringify(state));
+            localStorage.setItem('productivo_v3', JSON.stringify(state));
         }
 
-        // ==================== SWIPE NAVIGATION ====================
-        function setupSwipeNavigation() {
-            document.addEventListener('touchstart', e => {
-                touchStartX = e.touches[0].clientX;
-            }, { passive: true });
+        // ==================== THEME ====================
+        function toggleTheme() {
+            state.theme = state.theme === 'dark' ? 'light' : 'dark';
+            applyTheme();
+            saveState();
+        }
 
+        function applyTheme() {
+            if (state.theme === 'light') {
+                document.body.classList.add('light-theme');
+                document.getElementById('themeIcon').textContent = '☀️';
+                document.getElementById('themeToggleBtn').textContent = '☀️ Светлая';
+            } else {
+                document.body.classList.remove('light-theme');
+                document.getElementById('themeIcon').textContent = '🌙';
+                document.getElementById('themeToggleBtn').textContent = '🌙 Тёмная';
+            }
+        }
+
+        // ==================== SWIPE ====================
+        function setupSwipeNavigation() {
+            document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
             document.addEventListener('touchmove', e => {
                 if (touchStartX < 30 && pageHistory.length > 1) {
                     const diff = e.touches[0].clientX - touchStartX;
-                    if (diff > 20) {
-                        document.getElementById('swipeIndicator').classList.add('visible');
-                    }
+                    if (diff > 20) document.getElementById('swipeIndicator').classList.add('visible');
                 }
             }, { passive: true });
-
             document.addEventListener('touchend', e => {
                 document.getElementById('swipeIndicator').classList.remove('visible');
                 const touchEndX = e.changedTouches[0].clientX;
-                if (touchStartX < 30 && touchEndX - touchStartX > 80 && pageHistory.length > 1) {
-                    goBack();
-                }
+                if (touchStartX < 30 && touchEndX - touchStartX > 80 && pageHistory.length > 1) goBack();
             });
         }
 
         // ==================== NAVIGATION ====================
         function showPage(pageName) {
-            if (pageHistory[pageHistory.length - 1] !== pageName) {
-                pageHistory.push(pageName);
-            }
+            if (pageHistory[pageHistory.length - 1] !== pageName) pageHistory.push(pageName);
             
             document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-            document.getElementById('page-' + pageName).classList.remove('hidden');
+            document.getElementById('page-' + pageName)?.classList.remove('hidden');
             
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            const navItem = document.querySelector(`.nav-item[data-page="${pageName}"]`);
-            if (navItem) navItem.classList.add('active');
+            document.querySelector(`.nav-item[data-page="${pageName}"]`)?.classList.add('active');
 
-            // Update header
             const backBtn = document.getElementById('backBtn');
-            const headerTitle = document.getElementById('headerTitle');
-            
-            if (['settings', 'subscription', 'mood', 'goals'].includes(pageName)) {
+            if (['settings', 'subscription', 'projects', 'water', 'sleep'].includes(pageName)) {
                 backBtn.classList.remove('hidden');
                 backBtn.classList.add('flex');
             } else {
                 backBtn.classList.add('hidden');
-                backBtn.classList.remove('flex');
             }
 
             updateUI();
@@ -1105,28 +1121,23 @@
         function goBack() {
             if (pageHistory.length > 1) {
                 pageHistory.pop();
-                const prevPage = pageHistory[pageHistory.length - 1];
-                document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-                document.getElementById('page-' + prevPage).classList.remove('hidden');
-                
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                const navItem = document.querySelector(`.nav-item[data-page="${prevPage}"]`);
-                if (navItem) navItem.classList.add('active');
+                showPage(pageHistory[pageHistory.length - 1]);
             }
         }
 
         // ==================== UI UPDATE ====================
         function updateUI() {
             updateGreeting();
-            updateStats();
+            updateHomeStats();
             renderTasks();
+            renderProjects();
             renderHabits();
-            renderGoals();
             renderJournal();
             renderCalendar();
-            updatePomodoroStats();
+            renderWater();
+            renderSleep();
             updateAnalytics();
-            checkOverload();
+            updateProjectSelect();
         }
 
         function updateGreeting() {
@@ -1142,119 +1153,95 @@
             document.getElementById('settingsName').value = state.user.name;
         }
 
-        function updateStats() {
+        function updateHomeStats() {
             const today = new Date().toDateString();
-            const todayTasks = state.tasks.filter(t => t.date && new Date(t.date).toDateString() === today && !t.archived);
-            const doneTasks = todayTasks.filter(t => t.completed).length;
             
-            document.getElementById('tasksDone').textContent = doneTasks;
-            document.getElementById('tasksTotal').textContent = todayTasks.length;
-            document.getElementById('tasksProgress').textContent = todayTasks.length > 0 ? Math.round(doneTasks / todayTasks.length * 100) + '%' : '0%';
-
+            // Water
+            const todayWater = state.water.history[today] || 0;
+            const waterPercent = Math.round((todayWater / state.water.goal) * 100);
+            document.getElementById('homeWater').textContent = waterPercent + '%';
+            document.getElementById('waterPercent').textContent = waterPercent + '%';
+            document.getElementById('waterCurrent').textContent = todayWater;
+            
+            // Sleep
+            const lastSleep = state.sleep.history[0];
+            document.getElementById('homeSleep').textContent = lastSleep ? lastSleep.duration + 'ч' : '--';
+            document.getElementById('lastSleepDuration').textContent = lastSleep ? lastSleep.duration + 'ч' : '--';
+            
             // Habits
-            const todayHabits = state.habits.filter(h => h.completedDates.includes(today));
-            document.getElementById('habitsDone').textContent = todayHabits.length;
-            document.getElementById('habitsTotal').textContent = state.habits.length;
-            document.getElementById('habitsProgress').textContent = state.habits.length > 0 ? Math.round(todayHabits.length / state.habits.length * 100) + '%' : '0%';
-
-            // Focus time
-            const todaySessions = state.pomodoro.sessions.filter(s => new Date(s.date).toDateString() === today);
-            const focusMinutes = todaySessions.reduce((sum, s) => sum + s.duration, 0);
-            document.getElementById('todayFocus').textContent = `${Math.floor(focusMinutes / 60)}ч ${focusMinutes % 60}м`;
-
-            // Task limit
-            document.getElementById('taskLimitText').textContent = `${todayTasks.length}/${state.taskLimit}`;
-            const limitPercent = Math.min(100, (todayTasks.length / state.taskLimit) * 100);
-            document.getElementById('taskLimitProgress').style.width = limitPercent + '%';
-            document.getElementById('taskLimitProgress').className = `h-full rounded-full transition-all ${limitPercent >= 100 ? 'bg-red-500' : limitPercent >= 70 ? 'bg-yellow-500' : 'bg-gradient-to-r from-green-500 to-green-400'}`;
-
-            // Energy buttons
-            document.querySelectorAll('.energy-btn').forEach(btn => {
-                btn.classList.remove('tab-active');
-                btn.classList.add('glass');
-                if (btn.dataset.energy === state.currentEnergy) {
-                    btn.classList.add('tab-active');
-                    btn.classList.remove('glass');
-                }
-            });
-        }
-
-        function checkOverload() {
-            const today = new Date().toDateString();
-            const todayTasks = state.tasks.filter(t => t.date && new Date(t.date).toDateString() === today && !t.archived && !t.completed);
+            const todayHabits = state.habits.filter(h => h.completedDates?.includes(today));
+            const habitsPercent = state.habits.length > 0 ? Math.round((todayHabits.length / state.habits.length) * 100) : 0;
+            document.getElementById('homeHabits').textContent = habitsPercent + '%';
             
-            if (todayTasks.length > state.taskLimit) {
-                document.getElementById('overloadWarning').classList.remove('hidden');
-                if (state.strictMode) {
-                    showStrictMessage('Слишком много задач! Удали лишнее или не ной.');
-                }
-            } else {
-                document.getElementById('overloadWarning').classList.add('hidden');
-            }
-        }
-
-        function hideOverloadWarning() {
-            document.getElementById('overloadWarning').classList.add('hidden');
+            // Focus
+            const todaySessions = state.pomodoro.sessions.filter(s => new Date(s.date).toDateString() === today);
+            const focusMin = todaySessions.reduce((sum, s) => sum + s.duration, 0);
+            document.getElementById('homeFocus').textContent = focusMin + 'м';
         }
 
         // ==================== TASKS ====================
-        function showQuickAddTask() {
+        function showAddTaskModal() {
             document.getElementById('modalOverlay').classList.remove('hidden');
-            document.getElementById('quickAddTaskModal').classList.remove('hidden');
-            document.getElementById('quickTaskInput').focus();
+            document.getElementById('addTaskModal').classList.remove('hidden');
+            currentSubtasks = [];
+            renderSubtasks();
         }
 
-        function setTaskPriority(priority) {
-            currentTaskPriority = priority;
+        function setTaskPriority(p) {
+            currentPriority = p;
             document.querySelectorAll('.priority-btn').forEach(b => {
                 b.classList.remove('tab-active');
                 b.classList.add('glass');
             });
-            document.querySelector(`.priority-btn[data-priority="${priority}"]`).classList.add('tab-active');
-            document.querySelector(`.priority-btn[data-priority="${priority}"]`).classList.remove('glass');
+            document.querySelector(`.priority-btn[data-priority="${p}"]`).classList.add('tab-active');
+            document.querySelector(`.priority-btn[data-priority="${p}"]`).classList.remove('glass');
         }
 
-        function setTaskEnergy(energy) {
-            currentTaskEnergy = energy;
-            document.querySelectorAll('.task-energy-btn').forEach(b => {
-                b.classList.remove('tab-active');
-                b.classList.add('glass');
-            });
-            document.querySelector(`.task-energy-btn[data-energy="${energy}"]`).classList.add('tab-active');
-            document.querySelector(`.task-energy-btn[data-energy="${energy}"]`).classList.remove('glass');
+        function addSubtask() {
+            const input = document.getElementById('subtaskInput');
+            if (input.value.trim()) {
+                currentSubtasks.push({ title: input.value.trim(), completed: false });
+                input.value = '';
+                renderSubtasks();
+            }
         }
 
-        function addQuickTask() {
-            const title = document.getElementById('quickTaskInput').value.trim();
-            if (!title) {
-                showToast('Введите название');
-                return;
-            }
+        function renderSubtasks() {
+            const container = document.getElementById('subtasksList');
+            container.innerHTML = currentSubtasks.map((s, i) => `
+                <div class="flex items-center gap-2 glass rounded-xl p-2">
+                    <span class="flex-1 text-sm">${s.title}</span>
+                    <button onclick="currentSubtasks.splice(${i}, 1); renderSubtasks();" class="text-red-400">✕</button>
+                </div>
+            `).join('');
+        }
 
-            const today = new Date().toDateString();
-            const todayTasks = state.tasks.filter(t => t.date && new Date(t.date).toDateString() === today && !t.archived);
-            
-            if (todayTasks.length >= state.taskLimit && state.strictMode) {
-                showStrictMessage('Лимит! Сначала сделай то, что запланировал.');
-                return;
-            }
+        function addTask() {
+            const title = document.getElementById('taskTitle').value.trim();
+            if (!title) return showToast('Введите название');
 
             state.tasks.push({
                 id: Date.now(),
                 title,
-                priority: currentTaskPriority,
-                energy: currentTaskEnergy,
+                description: document.getElementById('taskDescription').value,
+                priority: currentPriority,
                 date: document.getElementById('taskDate').value,
+                time: document.getElementById('taskTime').value,
                 repeat: document.getElementById('taskRepeat').value,
+                projectId: document.getElementById('taskProject').value,
+                link: document.getElementById('taskLink').value,
+                subtasks: [...currentSubtasks],
+                status: 'todo',
                 completed: false,
-                archived: false,
-                subtasks: []
+                archived: false
             });
 
             saveState();
             updateUI();
             closeModal();
-            document.getElementById('quickTaskInput').value = '';
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('taskDescription').value = '';
+            document.getElementById('taskLink').value = '';
             showToast('✅ Задача добавлена');
         }
 
@@ -1262,45 +1249,24 @@
             const task = state.tasks.find(t => t.id === id);
             if (task) {
                 task.completed = !task.completed;
-                if (task.completed) {
-                    task.completedDate = new Date().toISOString();
-                    triggerConfetti();
-                    
-                    // Handle repeat
-                    if (task.repeat !== 'none') {
-                        const newDate = new Date(task.date);
-                        if (task.repeat === 'daily') newDate.setDate(newDate.getDate() + 1);
-                        else if (task.repeat === 'weekly') newDate.setDate(newDate.getDate() + 7);
-                        else if (task.repeat === 'monthly') newDate.setMonth(newDate.getMonth() + 1);
-                        
-                        state.tasks.push({
-                            ...task,
-                            id: Date.now(),
-                            date: newDate.toISOString().split('T')[0],
-                            completed: false,
-                            completedDate: null
-                        });
-                    }
-                }
+                task.status = task.completed ? 'done' : 'todo';
+                if (task.completed) triggerConfetti();
                 saveState();
                 updateUI();
             }
         }
 
-        function archiveTask(id) {
-            const task = state.tasks.find(t => t.id === id);
-            if (task) {
-                task.archived = true;
-                saveState();
-                updateUI();
-                showToast('📦 В архив');
-            }
-        }
+        function setTaskView(view) {
+            document.querySelectorAll('.task-view').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('glass');
+            });
+            document.querySelector(`.task-view[data-view="${view}"]`).classList.add('tab-active');
+            document.querySelector(`.task-view[data-view="${view}"]`).classList.remove('glass');
 
-        function deleteTask(id) {
-            state.tasks = state.tasks.filter(t => t.id !== id);
-            saveState();
-            updateUI();
+            document.getElementById('tasksList').classList.toggle('hidden', view === 'kanban');
+            document.getElementById('tasksKanban').classList.toggle('hidden', view !== 'kanban');
+            renderTasks();
         }
 
         function filterTasks(filter) {
@@ -1320,61 +1286,139 @@
             if (filter === 'today') tasks = tasks.filter(t => t.date && new Date(t.date).toDateString() === today && !t.archived);
             else if (filter === 'important') tasks = tasks.filter(t => t.priority === 'high' && !t.archived && !t.completed);
             else if (filter === 'archive') tasks = tasks.filter(t => t.archived);
-            else if (filter === 'all') tasks = tasks.filter(t => !t.archived && !t.completed);
+            else tasks = tasks.filter(t => !t.archived);
 
-            // Sort by priority
             const priorityOrder = { high: 0, medium: 1, low: 2 };
             tasks.sort((a, b) => {
                 if (a.completed !== b.completed) return a.completed ? 1 : -1;
                 return priorityOrder[a.priority] - priorityOrder[b.priority];
             });
 
+            // List View
             const container = document.getElementById('tasksList');
             if (tasks.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-center py-8">Нет задач</p>';
+                container.innerHTML = '<p class="text-secondary text-center py-8">Нет задач</p>';
+            } else {
+                container.innerHTML = tasks.map(task => {
+                    const project = state.projects.find(p => p.id == task.projectId);
+                    return `
+                    <div class="glass-dark rounded-2xl p-4 bento-card ${task.completed ? 'opacity-50' : ''}">
+                        <div class="flex items-start gap-3">
+                            <button onclick="toggleTask(${task.id})" class="w-6 h-6 rounded-full border-2 ${task.completed ? 'bg-green-500 border-green-500' : 'border-gray-500'} flex items-center justify-center flex-shrink-0 mt-0.5">
+                                ${task.completed ? '✓' : ''}
+                            </button>
+                            <div class="flex-1 min-w-0">
+                                <p class="font-medium ${task.completed ? 'line-through text-secondary' : ''}">${task.title}</p>
+                                ${task.description ? `<p class="text-secondary text-sm mt-1">${task.description}</p>` : ''}
+                                ${task.subtasks?.length ? `<p class="text-xs text-secondary mt-1">📝 ${task.subtasks.filter(s => s.completed).length}/${task.subtasks.length} подзадач</p>` : ''}
+                                <div class="flex items-center gap-2 mt-2 flex-wrap">
+                                    <span class="text-xs px-2 py-0.5 rounded-full ${task.priority === 'high' ? 'bg-red-500/20 text-red-400' : task.priority === 'medium' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-green-500/20 text-green-400'}">
+                                        ${task.priority === 'high' ? '🔴' : task.priority === 'medium' ? '🟡' : '🟢'}
+                                    </span>
+                                    ${task.time ? `<span class="text-xs text-secondary">⏰ ${task.time}</span>` : ''}
+                                    ${project ? `<span class="text-xs px-2 py-0.5 rounded-full" style="background: ${project.color}20; color: ${project.color}">${project.name}</span>` : ''}
+                                    ${task.link ? `<a href="${task.link}" target="_blank" class="text-xs text-blue-400">🔗</a>` : ''}
+                                </div>
+                            </div>
+                            <button onclick="archiveTask(${task.id})" class="text-secondary">📦</button>
+                        </div>
+                    </div>
+                `}).join('');
+            }
+
+            // Kanban View
+            const todo = tasks.filter(t => t.status === 'todo' && !t.completed);
+            const progress = tasks.filter(t => t.status === 'progress');
+            const done = tasks.filter(t => t.completed);
+
+            document.getElementById('kanbanTodo').innerHTML = todo.map(t => `<div class="glass rounded-xl p-2 text-sm">${t.title}</div>`).join('') || '<p class="text-secondary text-xs">Пусто</p>';
+            document.getElementById('kanbanProgress').innerHTML = progress.map(t => `<div class="glass rounded-xl p-2 text-sm">${t.title}</div>`).join('') || '<p class="text-secondary text-xs">Пусто</p>';
+            document.getElementById('kanbanDone').innerHTML = done.map(t => `<div class="glass rounded-xl p-2 text-sm opacity-50">${t.title}</div>`).join('') || '<p class="text-secondary text-xs">Пусто</p>';
+
+            // Today Preview
+            const todayPreview = document.getElementById('todayTasksPreview');
+            const previewTasks = state.tasks.filter(t => t.date && new Date(t.date).toDateString() === today && !t.archived).slice(0, 3);
+            todayPreview.innerHTML = previewTasks.length === 0 ? '<p class="text-secondary text-center py-4 text-sm">Нет задач на сегодня</p>' :
+                previewTasks.map(t => `
+                    <div class="flex items-center gap-3 py-2">
+                        <button onclick="toggleTask(${t.id})" class="w-5 h-5 rounded-full border-2 ${t.completed ? 'bg-green-500 border-green-500' : 'border-gray-600'} flex items-center justify-center flex-shrink-0">${t.completed ? '✓' : ''}</button>
+                        <span class="text-sm ${t.completed ? 'line-through text-secondary' : ''}">${t.title}</span>
+                    </div>
+                `).join('');
+        }
+
+        function archiveTask(id) {
+            const task = state.tasks.find(t => t.id === id);
+            if (task) { task.archived = true; saveState(); updateUI(); showToast('📦 В архив'); }
+        }
+
+        // ==================== PROJECTS ====================
+        function showAddProjectModal() {
+            document.getElementById('modalOverlay').classList.remove('hidden');
+            document.getElementById('addProjectModal').classList.remove('hidden');
+        }
+
+        function addProject() {
+            const name = document.getElementById('projectName').value.trim();
+            if (!name) return showToast('Введите название');
+
+            state.projects.push({
+                id: Date.now(),
+                name,
+                description: document.getElementById('projectDescription').value,
+                color: document.getElementById('projectColor').value,
+                deadline: document.getElementById('projectDeadline').value
+            });
+
+            saveState();
+            updateUI();
+            closeModal();
+            showToast('📁 Проект создан');
+        }
+
+        function renderProjects() {
+            const container = document.getElementById('projectsList');
+            const preview = document.getElementById('projectsPreview');
+
+            if (state.projects.length === 0) {
+                container.innerHTML = '<p class="text-secondary text-center py-8">Нет проектов</p>';
+                preview.innerHTML = '<p class="text-secondary text-center py-4 text-sm">Нет проектов</p>';
                 return;
             }
 
-            container.innerHTML = tasks.map(task => `
-                <div class="glass-dark rounded-2xl p-4 bento-card ${task.completed ? 'opacity-50' : ''} ${state.strictMode ? 'strict-mode' : ''}">
-                    <div class="flex items-start gap-3">
-                        <button onclick="toggleTask(${task.id})" class="w-6 h-6 rounded-full border-2 ${task.completed ? 'bg-green-500 border-green-500' : 'border-gray-500'} flex items-center justify-center flex-shrink-0 mt-0.5">
-                            ${task.completed ? '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>' : ''}
-                        </button>
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium ${task.completed ? 'line-through text-gray-500' : ''}">${task.title}</p>
-                            <div class="flex items-center gap-2 mt-2 flex-wrap">
-                                <span class="text-xs px-2 py-0.5 rounded-full ${task.priority === 'high' ? 'bg-red-500/20 text-red-400' : task.priority === 'medium' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-green-500/20 text-green-400'}">
-                                    ${task.priority === 'high' ? '🔴' : task.priority === 'medium' ? '🟡' : '🟢'}
-                                </span>
-                                ${task.energy ? `<span class="text-xs text-gray-400">${task.energy === 'high' ? '⚡' : task.energy === 'medium' ? '😐' : '🪫'}</span>` : ''}
-                                ${task.repeat !== 'none' ? '<span class="text-xs text-purple-400">🔄</span>' : ''}
+            const html = state.projects.map(p => {
+                const tasks = state.tasks.filter(t => t.projectId == p.id);
+                const done = tasks.filter(t => t.completed).length;
+                const progress = tasks.length > 0 ? Math.round((done / tasks.length) * 100) : 0;
+                return `
+                    <div class="glass-dark rounded-3xl p-5 bento-card" style="border-left: 4px solid ${p.color}">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-semibold">${p.name}</h3>
+                                <p class="text-secondary text-sm">${p.description || 'Без описания'}</p>
                             </div>
+                            <span class="text-lg font-bold" style="color: ${p.color}">${progress}%</span>
                         </div>
-                        <div class="flex gap-1">
-                            ${!task.archived ? `<button onclick="archiveTask(${task.id})" class="p-2 text-gray-500">📦</button>` : ''}
-                            <button onclick="deleteTask(${task.id})" class="p-2 text-gray-500">🗑️</button>
+                        <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full" style="width: ${progress}%; background: ${p.color}"></div>
                         </div>
+                        <p class="text-xs text-secondary mt-2">${done}/${tasks.length} задач</p>
                     </div>
+                `;
+            }).join('');
+
+            container.innerHTML = html;
+            preview.innerHTML = state.projects.slice(0, 2).map(p => `
+                <div class="flex items-center gap-3 py-2">
+                    <div class="w-3 h-3 rounded-full" style="background: ${p.color}"></div>
+                    <span class="text-sm">${p.name}</span>
                 </div>
             `).join('');
+        }
 
-            // Today preview
-            const todayPreview = document.getElementById('todayTasksPreview');
-            const previewTasks = state.tasks.filter(t => t.date && new Date(t.date).toDateString() === today && !t.archived).slice(0, 3);
-            
-            if (previewTasks.length === 0) {
-                todayPreview.innerHTML = '<p class="text-gray-500 text-center py-4 text-sm">Нет задач на сегодня</p>';
-            } else {
-                todayPreview.innerHTML = previewTasks.map(t => `
-                    <div class="flex items-center gap-3 py-2">
-                        <button onclick="toggleTask(${t.id})" class="w-5 h-5 rounded-full border-2 ${t.completed ? 'bg-green-500 border-green-500' : 'border-gray-600'} flex items-center justify-center flex-shrink-0">
-                            ${t.completed ? '✓' : ''}
-                        </button>
-                        <span class="text-sm ${t.completed ? 'line-through text-gray-500' : ''}">${t.title}</span>
-                    </div>
-                `).join('');
-            }
+        function updateProjectSelect() {
+            const select = document.getElementById('taskProject');
+            select.innerHTML = '<option value="">Без проекта</option>' + state.projects.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
         }
 
         // ==================== HABITS ====================
@@ -1395,18 +1439,13 @@
 
         function selectHabitIcon(icon) {
             selectedHabitIcon = icon;
-            document.querySelectorAll('.habit-icon').forEach(b => {
-                b.classList.remove('tab-active');
-            });
+            document.querySelectorAll('.habit-icon').forEach(b => b.classList.remove('tab-active'));
             document.querySelector(`.habit-icon[data-icon="${icon}"]`)?.classList.add('tab-active');
         }
 
         function addHabit() {
             const name = document.getElementById('habitName').value.trim();
-            if (!name) {
-                showToast('Введите название');
-                return;
-            }
+            if (!name) return showToast('Введите название');
 
             state.habits.push({
                 id: Date.now(),
@@ -1414,7 +1453,8 @@
                 icon: selectedHabitIcon,
                 type: currentHabitType,
                 completedDates: [],
-                streak: 0
+                streak: 0,
+                cleanDays: 0
             });
 
             saveState();
@@ -1428,14 +1468,17 @@
             const habit = state.habits.find(h => h.id === id);
             if (habit) {
                 const today = new Date().toDateString();
+                if (!habit.completedDates) habit.completedDates = [];
                 const idx = habit.completedDates.indexOf(today);
                 
                 if (idx > -1) {
                     habit.completedDates.splice(idx, 1);
-                    habit.streak = Math.max(0, habit.streak - 1);
+                    if (habit.type === 'quit') habit.cleanDays = Math.max(0, (habit.cleanDays || 0) - 1);
+                    else habit.streak = Math.max(0, habit.streak - 1);
                 } else {
                     habit.completedDates.push(today);
-                    habit.streak++;
+                    if (habit.type === 'quit') habit.cleanDays = (habit.cleanDays || 0) + 1;
+                    else habit.streak++;
                     triggerConfetti();
                 }
                 
@@ -1444,61 +1487,63 @@
             }
         }
 
-        function renderHabits() {
+        function filterHabits(filter) {
+            document.querySelectorAll('.habit-filter').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('glass');
+            });
+            document.querySelector(`.habit-filter[data-filter="${filter}"]`).classList.add('tab-active');
+            document.querySelector(`.habit-filter[data-filter="${filter}"]`).classList.remove('glass');
+            renderHabits(filter);
+        }
+
+        function renderHabits(filter = 'all') {
             const today = new Date().toDateString();
+            let habits = [...state.habits];
             
+            if (filter === 'positive') habits = habits.filter(h => h.type === 'positive');
+            else if (filter === 'quit') habits = habits.filter(h => h.type === 'quit');
+
             // Grid on home
             const grid = document.getElementById('habitsGrid');
-            if (state.habits.length === 0) {
-                grid.innerHTML = '<p class="text-gray-500 text-center py-4 col-span-4 text-sm">Нет привычек</p>';
-            } else {
-                grid.innerHTML = state.habits.map(h => {
-                    const done = h.completedDates.includes(today);
+            grid.innerHTML = state.habits.length === 0 ? '<p class="text-secondary text-center py-4 col-span-4 text-sm">Нет привычек</p>' :
+                state.habits.slice(0, 8).map(h => {
+                    const done = h.completedDates?.includes(today);
                     return `
-                        <button onclick="toggleHabit(${h.id})" class="bento-card ${done ? 'bg-gradient-to-br from-purple-500/30 to-pink-500/30 border border-purple-500/50' : 'glass'} rounded-2xl p-3 flex flex-col items-center">
+                        <button onclick="toggleHabit(${h.id})" class="bento-card ${done ? 'bg-gradient-to-br from-purple-500/30 to-pink-500/30 border border-purple-500/50' : 'glass'} ${h.type === 'quit' ? 'habit-quit' : ''} rounded-2xl p-3 flex flex-col items-center">
                             <span class="text-xl ${done ? '' : 'grayscale opacity-50'}">${h.icon}</span>
                             <span class="text-[10px] mt-1 truncate w-full text-center">${h.name}</span>
                         </button>
                     `;
                 }).join('');
-            }
 
             // Full list
             const list = document.getElementById('habitsList');
-            if (state.habits.length === 0) {
-                list.innerHTML = '<p class="text-gray-500 text-center py-8">Нет привычек</p>';
-            } else {
-                list.innerHTML = state.habits.map(h => {
-                    const done = h.completedDates.includes(today);
-                    const weekDates = getLast7Days().map(d => h.completedDates.includes(d));
+            list.innerHTML = habits.length === 0 ? '<p class="text-secondary text-center py-8">Нет привычек</p>' :
+                habits.map(h => {
+                    const done = h.completedDates?.includes(today);
+                    const weekDates = getLast7Days().map(d => h.completedDates?.includes(d));
+                    const isQuit = h.type === 'quit';
                     
                     return `
-                        <div class="glass-dark rounded-2xl p-4 bento-card">
+                        <div class="glass-dark rounded-2xl p-4 bento-card ${isQuit ? 'habit-quit' : ''}">
                             <div class="flex items-center gap-3 mb-3">
                                 <button onclick="toggleHabit(${h.id})" class="w-12 h-12 rounded-2xl ${done ? 'bg-gradient-to-br from-purple-500 to-pink-500' : 'glass'} flex items-center justify-center text-2xl">
                                     ${h.icon}
                                 </button>
                                 <div class="flex-1">
                                     <p class="font-medium">${h.name}</p>
-                                    <p class="text-xs text-gray-400">${h.type === 'negative' ? '🚫 Избегать' : '✅ Делать'} • 🔥 ${h.streak}</p>
+                                    <p class="text-xs text-secondary">
+                                        ${isQuit ? `🚫 Бросить • 🧹 ${h.cleanDays || 0} чистых дней` : `✅ Развивать • 🔥 ${h.streak || 0} дней подряд`}
+                                    </p>
                                 </div>
                             </div>
                             <div class="flex gap-1">
-                                ${weekDates.map((d, i) => `<div class="flex-1 h-2 rounded-full ${d ? 'bg-gradient-to-r from-purple-500 to-pink-500' : 'bg-white/10'}"></div>`).join('')}
+                                ${weekDates.map(d => `<div class="flex-1 h-2 rounded-full ${d ? 'bg-gradient-to-r from-purple-500 to-pink-500' : 'bg-white/10'}"></div>`).join('')}
                             </div>
                         </div>
                     `;
                 }).join('');
-            }
-
-            // Week chart
-            const chart = document.getElementById('habitWeekChart');
-            const days = getLast7Days();
-            chart.innerHTML = days.map(day => {
-                const count = state.habits.filter(h => h.completedDates.includes(day)).length;
-                const percent = state.habits.length > 0 ? (count / state.habits.length) * 100 : 0;
-                return `<div class="flex-1 bg-gradient-to-t from-purple-500 to-pink-500 rounded-t-lg transition-all" style="height: ${Math.max(5, percent)}%"></div>`;
-            }).join('');
         }
 
         function getLast7Days() {
@@ -1511,79 +1556,210 @@
             return days;
         }
 
-        // ==================== GOALS ====================
-        function showAddGoalModal() {
-            document.getElementById('modalOverlay').classList.remove('hidden');
-            document.getElementById('addGoalModal').classList.remove('hidden');
+        // ==================== WATER ====================
+        function addWater(amount) {
+            const today = new Date().toDateString();
+            if (!state.water.history[today]) state.water.history[today] = 0;
+            state.water.history[today] += amount;
+            saveState();
+            updateUI();
+            renderWater();
+            showToast(`💧 +${amount}мл`);
         }
 
-        function addGoal() {
-            const title = document.getElementById('goalTitle').value.trim();
-            const target = parseInt(document.getElementById('goalTarget').value) || 100;
-            
-            if (!title) {
-                showToast('Введите название');
-                return;
+        function addCustomWater() {
+            const amount = parseInt(document.getElementById('customWater').value);
+            if (amount > 0) {
+                addWater(amount);
+                document.getElementById('customWater').value = '';
             }
+        }
 
-            state.goals.push({
+        function renderWater() {
+            const today = new Date().toDateString();
+            const current = state.water.history[today] || 0;
+            const percent = Math.min(100, Math.round((current / state.water.goal) * 100));
+
+            document.getElementById('waterAmount').textContent = current;
+            document.getElementById('waterTarget').textContent = state.water.goal;
+            document.getElementById('waterGoal').textContent = state.water.goal;
+            document.getElementById('waterFillVisual').style.height = percent + '%';
+
+            // History chart
+            const days = getLast7Days();
+            const history = document.getElementById('waterHistory');
+            history.innerHTML = days.map(day => {
+                const amount = state.water.history[day] || 0;
+                const h = Math.min(100, (amount / state.water.goal) * 100);
+                return `<div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t-lg" style="height: ${Math.max(5, h)}%"></div>`;
+            }).join('');
+        }
+
+        // ==================== SLEEP ====================
+        function setSleepQuality(q) {
+            currentSleepQuality = q;
+            document.querySelectorAll('.sleep-q').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('glass');
+            });
+            document.querySelector(`.sleep-q[data-q="${q}"]`).classList.add('tab-active');
+            document.querySelector(`.sleep-q[data-q="${q}"]`).classList.remove('glass');
+        }
+
+        function saveSleep() {
+            const start = document.getElementById('sleepStart').value;
+            const end = document.getElementById('sleepEnd').value;
+            if (!start || !end) return showToast('Укажите время');
+
+            const startDate = new Date(`2000-01-01 ${start}`);
+            let endDate = new Date(`2000-01-01 ${end}`);
+            if (endDate < startDate) endDate.setDate(endDate.getDate() + 1);
+            
+            const duration = Math.round((endDate - startDate) / (1000 * 60 * 60) * 10) / 10;
+
+            state.sleep.history.unshift({
                 id: Date.now(),
-                title,
-                target,
-                current: 0,
-                unit: document.getElementById('goalUnit').value || '',
-                deadline: document.getElementById('goalDeadline').value,
-                milestones: []
+                date: new Date().toISOString(),
+                start,
+                end,
+                duration,
+                quality: currentSleepQuality
             });
 
             saveState();
             updateUI();
-            closeModal();
-            showToast('🎯 Цель создана');
+            showToast('😴 Сон записан');
         }
 
-        function updateGoalProgress(id, delta) {
-            const goal = state.goals.find(g => g.id === id);
-            if (goal) {
-                goal.current = Math.max(0, Math.min(goal.target, goal.current + delta));
-                if (goal.current >= goal.target) {
-                    triggerConfetti();
-                    showToast('🎉 Цель достигнута!');
-                }
-                saveState();
-                updateUI();
-            }
-        }
+        function renderSleep() {
+            const last = state.sleep.history[0];
+            document.getElementById('sleepDuration').textContent = last ? `${last.duration}ч` : '--';
+            document.getElementById('sleepQualityBadge').textContent = last ? ['😫','😕','😐','😊','🤩'][last.quality - 1] : '--';
 
-        function renderGoals() {
-            const container = document.getElementById('goalsList');
-            if (state.goals.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-center py-8">Нет целей</p>';
-                return;
-            }
-
-            container.innerHTML = state.goals.map(g => {
-                const progress = Math.round((g.current / g.target) * 100);
-                return `
-                    <div class="glass-dark rounded-3xl p-5 bento-card">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <p class="font-semibold">${g.title}</p>
-                                <p class="text-gray-400 text-sm">${g.current}/${g.target} ${g.unit}</p>
-                            </div>
-                            <span class="text-lg font-bold ${progress >= 100 ? 'text-green-400' : 'text-purple-400'}">${progress}%</span>
+            const history = document.getElementById('sleepHistory');
+            history.innerHTML = state.sleep.history.length === 0 ? '<p class="text-secondary text-sm text-center">Нет записей</p>' :
+                state.sleep.history.slice(0, 7).map(s => `
+                    <div class="flex items-center justify-between glass rounded-xl p-3">
+                        <div>
+                            <p class="text-sm font-medium">${new Date(s.date).toLocaleDateString('ru')}</p>
+                            <p class="text-xs text-secondary">${s.start} → ${s.end}</p>
                         </div>
-                        <div class="h-2 bg-white/10 rounded-full overflow-hidden mb-3">
-                            <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" style="width: ${progress}%"></div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="updateGoalProgress(${g.id}, -1)" class="glass flex-1 py-2 rounded-xl text-sm">-1</button>
-                            <button onclick="updateGoalProgress(${g.id}, 1)" class="bg-gradient-to-r from-purple-500 to-pink-500 flex-1 py-2 rounded-xl text-sm">+1</button>
-                            <button onclick="updateGoalProgress(${g.id}, 10)" class="glass flex-1 py-2 rounded-xl text-sm">+10</button>
+                        <div class="text-right">
+                            <p class="font-bold">${s.duration}ч</p>
+                            <p>${['😫','😕','😐','😊','🤩'][s.quality - 1]}</p>
                         </div>
                     </div>
+                `).join('');
+        }
+
+        // ==================== CALENDAR ====================
+        function setCalendarView(view) {
+            calendarView = view;
+            document.querySelectorAll('.cal-view').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('glass');
+            });
+            document.querySelector(`.cal-view[data-view="${view}"]`).classList.add('tab-active');
+            document.querySelector(`.cal-view[data-view="${view}"]`).classList.remove('glass');
+            renderCalendar();
+        }
+
+        function prevCalendar() {
+            if (calendarView === 'day') calendarDate.setDate(calendarDate.getDate() - 1);
+            else if (calendarView === 'week') calendarDate.setDate(calendarDate.getDate() - 7);
+            else calendarDate.setMonth(calendarDate.getMonth() - 1);
+            renderCalendar();
+        }
+
+        function nextCalendar() {
+            if (calendarView === 'day') calendarDate.setDate(calendarDate.getDate() + 1);
+            else if (calendarView === 'week') calendarDate.setDate(calendarDate.getDate() + 7);
+            else calendarDate.setMonth(calendarDate.getMonth() + 1);
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            const container = document.getElementById('calendarContent');
+            const title = document.getElementById('calendarTitle');
+            const today = new Date().toDateString();
+
+            if (calendarView === 'day') {
+                title.textContent = calendarDate.toLocaleDateString('ru', { weekday: 'long', day: 'numeric', month: 'long' });
+                const dayTasks = state.tasks.filter(t => t.date && new Date(t.date).toDateString() === calendarDate.toDateString() && !t.archived);
+                
+                const hours = Array.from({ length: 14 }, (_, i) => i + 8);
+                container.innerHTML = hours.map(h => {
+                    const hourTasks = dayTasks.filter(t => t.time && parseInt(t.time) === h);
+                    return `
+                        <div class="flex items-start gap-3 py-2 border-b border-white/5">
+                            <span class="text-xs text-secondary w-12">${h}:00</span>
+                            <div class="flex-1">
+                                ${hourTasks.map(t => `<div class="bg-purple-500/20 rounded-lg px-2 py-1 text-sm mb-1">${t.title}</div>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } else if (calendarView === 'week') {
+                const startOfWeek = new Date(calendarDate);
+                startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+                
+                title.textContent = `${startOfWeek.toLocaleDateString('ru', { day: 'numeric', month: 'short' })} - ${new Date(startOfWeek.getTime() + 6 * 24 * 60 * 60 * 1000).toLocaleDateString('ru', { day: 'numeric', month: 'short' })}`;
+                
+                const days = [];
+                for (let i = 0; i < 7; i++) {
+                    const d = new Date(startOfWeek);
+                    d.setDate(d.getDate() + i);
+                    days.push(d);
+                }
+
+                container.innerHTML = `
+                    <div class="grid grid-cols-7 gap-1 text-center text-xs text-secondary mb-2">
+                        <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+                    </div>
+                    <div class="grid grid-cols-7 gap-1">
+                        ${days.map(d => {
+                            const isToday = d.toDateString() === today;
+                            const tasks = state.tasks.filter(t => t.date && new Date(t.date).toDateString() === d.toDateString() && !t.archived);
+                            return `
+                                <div class="calendar-day relative glass rounded-xl p-2 text-center ${isToday ? 'today' : ''} ${tasks.length > 0 ? 'has-tasks' : ''}">
+                                    <span class="text-sm">${d.getDate()}</span>
+                                    ${tasks.length > 0 ? `<p class="text-[10px] text-secondary">${tasks.length} зад.</p>` : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
                 `;
-            }).join('');
+            } else {
+                title.textContent = calendarDate.toLocaleDateString('ru', { month: 'long', year: 'numeric' });
+                
+                const firstDay = new Date(calendarDate.getFullYear(), calendarDate.getMonth(), 1);
+                const lastDay = new Date(calendarDate.getFullYear(), calendarDate.getMonth() + 1, 0);
+                const startPad = (firstDay.getDay() + 6) % 7;
+                
+                const days = [];
+                for (let i = 0; i < startPad; i++) days.push(null);
+                for (let i = 1; i <= lastDay.getDate(); i++) {
+                    days.push(new Date(calendarDate.getFullYear(), calendarDate.getMonth(), i));
+                }
+
+                container.innerHTML = `
+                    <div class="grid grid-cols-7 gap-1 text-center text-xs text-secondary mb-2">
+                        <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+                    </div>
+                    <div class="grid grid-cols-7 gap-1">
+                        ${days.map(d => {
+                            if (!d) return '<div class="calendar-day"></div>';
+                            const isToday = d.toDateString() === today;
+                            const tasks = state.tasks.filter(t => t.date && new Date(t.date).toDateString() === d.toDateString() && !t.archived);
+                            return `
+                                <div class="calendar-day relative glass rounded-lg p-1 text-center text-sm ${isToday ? 'today' : ''} ${tasks.length > 0 ? 'has-tasks' : ''}">
+                                    ${d.getDate()}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            }
         }
 
         // ==================== JOURNAL ====================
@@ -1592,16 +1768,24 @@
             document.getElementById('addJournalModal').classList.remove('hidden');
         }
 
+        function setJournalMood(m) {
+            currentJournalMood = m;
+            document.querySelectorAll('.journal-mood').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('glass');
+            });
+            document.querySelector(`.journal-mood[data-mood="${m}"]`).classList.add('tab-active');
+            document.querySelector(`.journal-mood[data-mood="${m}"]`).classList.remove('glass');
+        }
+
         function addJournalEntry() {
             const text = document.getElementById('journalText').value.trim();
-            if (!text) {
-                showToast('Напишите что-нибудь');
-                return;
-            }
+            if (!text) return showToast('Напишите что-нибудь');
 
             state.journal.unshift({
                 id: Date.now(),
                 text,
+                mood: currentJournalMood,
                 date: new Date().toISOString()
             });
 
@@ -1614,55 +1798,29 @@
 
         function renderJournal() {
             const container = document.getElementById('journalList');
-            if (state.journal.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-center py-8">Нет записей</p>';
-                return;
-            }
-
-            container.innerHTML = state.journal.map(j => `
-                <div class="glass-dark rounded-2xl p-4">
-                    <p class="text-gray-400 text-xs mb-2">${new Date(j.date).toLocaleString('ru')}</p>
-                    <p class="text-sm">${j.text}</p>
-                </div>
-            `).join('');
-        }
-
-        // ==================== CALENDAR ====================
-        function renderCalendar() {
-            const container = document.getElementById('calendarContent');
-            const today = new Date();
-            document.getElementById('calendarTitle').textContent = today.toLocaleDateString('ru', { weekday: 'long', day: 'numeric', month: 'long' });
-
-            const hours = Array.from({ length: 16 }, (_, i) => i + 7);
-            const todayTasks = state.tasks.filter(t => t.date && new Date(t.date).toDateString() === today.toDateString() && !t.archived);
-
-            container.innerHTML = hours.map(h => `
-                <div class="flex items-start gap-3 py-2 border-b border-white/5">
-                    <span class="text-xs text-gray-500 w-10">${h}:00</span>
-                    <div class="flex-1 min-h-[2rem]">
-                        ${todayTasks.filter(t => t.time && parseInt(t.time) === h).map(t => `
-                            <div class="bg-purple-500/20 rounded-lg px-2 py-1 text-sm mb-1">${t.title}</div>
-                        `).join('')}
+            container.innerHTML = state.journal.length === 0 ? '<p class="text-secondary text-center py-8">Нет записей</p>' :
+                state.journal.map(j => `
+                    <div class="glass-dark rounded-2xl p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <p class="text-secondary text-xs">${new Date(j.date).toLocaleString('ru')}</p>
+                            <span>${['😫','😕','😐','😊','🤩'][j.mood - 1]}</span>
+                        </div>
+                        <p class="text-sm">${j.text}</p>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
         }
-
-        function setCalendarView(view) {
-            document.querySelectorAll('.cal-view').forEach(b => {
-                b.classList.remove('tab-active');
-                b.classList.add('glass');
-            });
-            document.querySelector(`.cal-view[data-view="${view}"]`).classList.add('tab-active');
-            document.querySelector(`.cal-view[data-view="${view}"]`).classList.remove('glass');
-        }
-
-        function prevDate() { showToast('← Предыдущий день'); }
-        function nextDate() { showToast('Следующий день →'); }
 
         // ==================== POMODORO ====================
         function setTimerMode(mode) {
             timerState.mode = mode;
+            const durations = { focus: state.pomodoro.focusTime, short: state.pomodoro.shortBreak, long: state.pomodoro.longBreak };
+            const labels = { focus: 'Фокус', short: 'Перерыв', long: 'Длинный' };
+
+            timerState.minutes = durations[mode];
+            timerState.seconds = 0;
+            timerState.isRunning = false;
+            clearInterval(timerState.interval);
+
             document.querySelectorAll('.timer-mode').forEach(b => {
                 b.classList.remove('tab-active');
                 b.classList.add('glass');
@@ -1670,18 +1828,9 @@
             document.querySelector(`.timer-mode[data-mode="${mode}"]`).classList.add('tab-active');
             document.querySelector(`.timer-mode[data-mode="${mode}"]`).classList.remove('glass');
 
-            const durations = { focus: state.pomodoro.focusTime, short: state.pomodoro.shortBreak, long: state.pomodoro.longBreak };
-            const labels = { focus: 'Фокус', short: 'Перерыв', long: 'Длинный перерыв' };
-
-            timerState.minutes = durations[mode];
-            timerState.seconds = 0;
-            timerState.isRunning = false;
-            clearInterval(timerState.interval);
-
             updateTimerDisplay();
             document.getElementById('timerLabel').textContent = labels[mode];
-            document.getElementById('playIcon').classList.remove('hidden');
-            document.getElementById('pauseIcon').classList.add('hidden');
+            document.getElementById('timerIcon').textContent = '▶️';
         }
 
         function updateTimerDisplay() {
@@ -1699,12 +1848,10 @@
             if (timerState.isRunning) {
                 timerState.isRunning = false;
                 clearInterval(timerState.interval);
-                document.getElementById('playIcon').classList.remove('hidden');
-                document.getElementById('pauseIcon').classList.add('hidden');
+                document.getElementById('timerIcon').textContent = '▶️';
             } else {
                 timerState.isRunning = true;
-                document.getElementById('playIcon').classList.add('hidden');
-                document.getElementById('pauseIcon').classList.remove('hidden');
+                document.getElementById('timerIcon').textContent = '⏸️';
 
                 timerState.interval = setInterval(() => {
                     if (timerState.seconds === 0) {
@@ -1741,129 +1888,7 @@
             updateUI();
         }
 
-        function updatePomodoroStats() {
-            const today = new Date().toDateString();
-            const todaySessions = state.pomodoro.sessions.filter(s => new Date(s.date).toDateString() === today);
-            const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
-            const weekSessions = state.pomodoro.sessions.filter(s => new Date(s.date) > weekAgo);
-
-            document.getElementById('todaySessions').textContent = todaySessions.length;
-            document.getElementById('weekSessions').textContent = weekSessions.length;
-            document.getElementById('totalSessions').textContent = state.pomodoro.sessions.length;
-        }
-
-        // ==================== MOOD ====================
-        function setMood(mood) {
-            currentMoodEntry.mood = mood;
-            document.querySelectorAll('.mood-btn').forEach(b => {
-                b.style.transform = b.dataset.mood == mood ? 'scale(1.3)' : 'scale(1)';
-                b.style.background = b.dataset.mood == mood ? 'rgba(102,126,234,0.3)' : '';
-            });
-        }
-
-        function toggleEnergySource(source) {
-            const btn = document.querySelector(`.energy-source[data-source="${source}"]`);
-            const idx = currentMoodEntry.sources.indexOf(source);
-            if (idx > -1) {
-                currentMoodEntry.sources.splice(idx, 1);
-                btn.classList.remove('tab-active');
-                btn.classList.add('glass');
-            } else {
-                currentMoodEntry.sources.push(source);
-                btn.classList.add('tab-active');
-                btn.classList.remove('glass');
-            }
-        }
-
-        function toggleEnergyDrain(drain) {
-            const btn = document.querySelector(`.energy-drain[data-drain="${drain}"]`);
-            const idx = currentMoodEntry.drains.indexOf(drain);
-            if (idx > -1) {
-                currentMoodEntry.drains.splice(idx, 1);
-                btn.classList.remove('tab-active');
-                btn.classList.add('glass');
-            } else {
-                currentMoodEntry.drains.push(drain);
-                btn.classList.add('tab-active');
-                btn.classList.remove('glass');
-            }
-        }
-
-        function saveMoodEntry() {
-            state.mood.push({
-                id: Date.now(),
-                date: new Date().toISOString(),
-                ...currentMoodEntry
-            });
-            saveState();
-            showToast('😊 Настроение сохранено');
-            
-            const moods = ['😫', '😕', '😐', '😊', '🤩'];
-            const labels = ['Ужасно', 'Плохо', 'Нормально', 'Хорошо', 'Отлично'];
-            document.getElementById('currentMoodEmoji').textContent = moods[currentMoodEntry.mood - 1];
-            document.getElementById('moodLabel').textContent = labels[currentMoodEntry.mood - 1];
-        }
-
-        // ==================== MODE ====================
-        function showModeModal() {
-            document.getElementById('modalOverlay').classList.remove('hidden');
-            document.getElementById('modeModal').classList.remove('hidden');
-        }
-
-        function setMode(mode) {
-            state.currentMode = mode;
-            const modes = {
-                work: { icon: '💼', text: 'Работа', class: 'mode-work' },
-                sport: { icon: '🏃', text: 'Спорт', class: 'mode-sport' },
-                rest: { icon: '🌴', text: 'Выходной', class: 'mode-rest' },
-                recovery: { icon: '🧘', text: 'Восстановление', class: 'mode-recovery' }
-            };
-
-            const btn = document.getElementById('currentModeBtn');
-            btn.className = `${modes[mode].class} px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1`;
-            document.getElementById('currentModeIcon').textContent = modes[mode].icon;
-            document.getElementById('currentModeText').textContent = modes[mode].text;
-
-            saveState();
-            closeModal();
-            showToast(`${modes[mode].icon} Режим: ${modes[mode].text}`);
-            generateAIInsight();
-        }
-
-        function setEnergy(energy) {
-            state.currentEnergy = energy;
-            saveState();
-            updateUI();
-            generateAIInsight();
-        }
-
         // ==================== ANALYTICS ====================
-        function updateAnalytics() {
-            const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
-            
-            const weekTasks = state.tasks.filter(t => t.completed && new Date(t.completedDate) > weekAgo);
-            document.getElementById('analyticsTasksDone').textContent = weekTasks.length;
-
-            const today = new Date().toDateString();
-            const todayHabits = state.habits.filter(h => h.completedDates.includes(today));
-            document.getElementById('analyticsHabitsPercent').textContent = state.habits.length > 0 
-                ? Math.round((todayHabits.length / state.habits.length) * 100) + '%' : '0%';
-
-            const focusMinutes = state.pomodoro.sessions.filter(s => new Date(s.date) > weekAgo).reduce((sum, s) => sum + s.duration, 0);
-            document.getElementById('analyticsFocusTime').textContent = Math.round(focusMinutes / 60) + 'ч';
-            document.getElementById('analyticsStreak').textContent = state.streak;
-
-            // Vegetable days (low productivity)
-            const days = getLast7Days();
-            let vegDays = 0;
-            days.forEach(day => {
-                const dayTasks = state.tasks.filter(t => t.date && new Date(t.date).toDateString() === day);
-                const completed = dayTasks.filter(t => t.completed).length;
-                if (dayTasks.length > 0 && completed / dayTasks.length < 0.3) vegDays++;
-            });
-            document.getElementById('vegetableDays').textContent = vegDays;
-        }
-
         function setAnalyticsPeriod(period) {
             document.querySelectorAll('.analytics-period').forEach(b => {
                 b.classList.remove('tab-active');
@@ -1871,62 +1896,69 @@
             });
             document.querySelector(`.analytics-period[data-period="${period}"]`).classList.add('tab-active');
             document.querySelector(`.analytics-period[data-period="${period}"]`).classList.remove('glass');
+            updateAnalytics(period);
         }
 
-        // ==================== AI INSIGHTS ====================
-        function generateAIInsight() {
-            const insights = [
-                'Ты обычно продуктивен утром. Начни с важных задач!',
-                'Сегодня хороший день для творческих задач.',
-                'Не забудь сделать перерыв каждые 90 минут.',
-                'Твоя энергия низкая — выбери лёгкие задачи.',
-                'Ты на пути к новому streak-рекорду!',
-                'Попробуй технику "2 минуты" для мелких дел.',
-                'Лучшее время для сложных задач — до обеда.'
-            ];
+        function updateAnalytics(period = 'week') {
+            const now = new Date();
+            let startDate = new Date();
+            if (period === 'week') startDate.setDate(now.getDate() - 7);
+            else if (period === 'month') startDate.setMonth(now.getMonth() - 1);
+            else startDate.setFullYear(now.getFullYear() - 1);
 
-            if (state.currentEnergy === 'low') {
-                document.getElementById('aiInsightText').textContent = 'Твоя энергия низкая. Сфокусируйся на 1-2 простых задачах.';
-            } else if (state.currentMode === 'recovery') {
-                document.getElementById('aiInsightText').textContent = 'Режим восстановления. Не грузи себя — отдых тоже продуктивность.';
-            } else {
-                document.getElementById('aiInsightText').textContent = insights[Math.floor(Math.random() * insights.length)];
-            }
-        }
+            const tasks = state.tasks.filter(t => t.completed && new Date(t.completedDate || t.date) > startDate);
+            document.getElementById('analyticsTasksDone').textContent = tasks.length;
 
-        // ==================== STRICT MODE ====================
-        function toggleStrictMode() {
-            state.strictMode = document.getElementById('strictMode').checked;
-            saveState();
-            if (state.strictMode) {
-                showStrictMessage('Режим «Жёсткий дед» активирован. Без нытья!');
-            }
-        }
+            const today = new Date().toDateString();
+            const todayHabits = state.habits.filter(h => h.completedDates?.includes(today));
+            document.getElementById('analyticsHabitsPercent').textContent = state.habits.length > 0 
+                ? Math.round((todayHabits.length / state.habits.length) * 100) + '%' : '0%';
 
-        function showStrictMessage(msg) {
-            document.getElementById('strictMessage').textContent = msg;
-            document.getElementById('strictToast').classList.remove('hidden');
-            setTimeout(() => document.getElementById('strictToast').classList.add('hidden'), 3000);
-        }
+            const focusMinutes = state.pomodoro.sessions.filter(s => new Date(s.date) > startDate).reduce((sum, s) => sum + s.duration, 0);
+            document.getElementById('analyticsFocusTime').textContent = Math.round(focusMinutes / 60) + 'ч';
 
-        function updateTaskLimitDisplay() {
-            const val = document.getElementById('taskLimitSetting').value;
-            document.getElementById('taskLimitDisplay').textContent = val + ' задач';
-            state.taskLimit = parseInt(val);
+            const days = getLast7Days();
+            const waterSum = days.reduce((sum, d) => sum + (state.water.history[d] || 0), 0);
+            document.getElementById('analyticsWater').textContent = Math.round(waterSum / 7) + 'мл';
+
+            // Chart
+            const chart = document.getElementById('productivityChart');
+            chart.innerHTML = days.map(day => {
+                const dayTasks = state.tasks.filter(t => t.date && new Date(t.date).toDateString() === day);
+                const completed = dayTasks.filter(t => t.completed).length;
+                const percent = dayTasks.length > 0 ? (completed / dayTasks.length) * 100 : 0;
+                return `<div class="flex-1 bg-gradient-to-t from-purple-500 to-pink-500 rounded-t-lg" style="height: ${Math.max(5, percent)}%"></div>`;
+            }).join('');
+
+            // Sessions
+            document.getElementById('todaySessions').textContent = state.pomodoro.sessions.filter(s => new Date(s.date).toDateString() === today).length;
+            document.getElementById('weekSessions').textContent = state.pomodoro.sessions.filter(s => new Date(s.date) > startDate).length;
+            document.getElementById('totalMinutes').textContent = Math.round(state.pomodoro.sessions.reduce((s, x) => s + x.duration, 0) / 60) + 'ч';
         }
 
         // ==================== SETTINGS ====================
         function saveSettings() {
             state.user.name = document.getElementById('settingsName').value || 'Пользователь';
+            state.water.goal = parseInt(document.getElementById('settingsWaterGoal').value) || 2000;
+            state.sleep.goal = parseInt(document.getElementById('settingsSleepGoal').value) || 8;
             state.pomodoro.focusTime = parseInt(document.getElementById('settingsFocus').value) || 25;
-            state.pomodoro.shortBreak = parseInt(document.getElementById('settingsShortBreak').value) || 5;
-            state.pomodoro.longBreak = parseInt(document.getElementById('settingsLongBreak').value) || 15;
-            state.taskLimit = parseInt(document.getElementById('taskLimitSetting').value) || 7;
+            state.pomodoro.shortBreak = parseInt(document.getElementById('settingsShort').value) || 5;
+            state.pomodoro.longBreak = parseInt(document.getElementById('settingsLong').value) || 15;
 
             saveState();
             updateUI();
             setTimerMode('focus');
             showToast('✅ Сохранено');
+        }
+
+        function exportData() {
+            const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'productivo-backup.json';
+            a.click();
+            showToast('📤 Данные экспортированы');
         }
 
         function clearData() {
@@ -1938,7 +1970,6 @@
 
         // ==================== SUBSCRIPTION ====================
         function selectPlan(plan) {
-            state.selectedPlan = plan;
             document.querySelectorAll('.sub-option').forEach(o => {
                 o.classList.remove('gradient-border');
                 o.classList.add('glass-dark');
@@ -1982,9 +2013,8 @@
             }
         }
 
-        // Init timer display
+        // Init
         setTimerMode('focus');
-        generateAIInsight();
     </script>
 </body>
 </html>
