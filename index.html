@@ -214,9 +214,18 @@
         .sleep-quality-3 { background: #eab308; }
         .sleep-quality-4 { background: #22c55e; }
         .sleep-quality-5 { background: #10b981; }
+        
+        .safe-area-bottom {
+            padding-bottom: max(8px, env(safe-area-inset-bottom));
+        }
+        
+        @media (max-width: 360px) {
+            .nav-item span.text-lg { font-size: 1rem; }
+            .nav-item span.text-\[9px\] { font-size: 8px; }
+        }
     </style>
 </head>
-<body class="pb-24">
+<body class="pb-20">
     <div id="swipeIndicator" class="swipe-indicator"></div>
 
     <!-- Ambient Background -->
@@ -825,39 +834,65 @@
         </main>
 
         <!-- Bottom Navigation -->
-        <nav class="fixed bottom-0 left-0 right-0 nav-solid px-2 py-3 z-40">
-            <div class="flex justify-between items-center max-w-md mx-auto">
-                <button onclick="showPage('home')" class="nav-item relative flex flex-col items-center px-2 active" data-page="home">
-                    <span class="text-xl">🏠</span>
-                    <span class="text-[10px] mt-1">Главная</span>
+        <nav class="fixed bottom-0 left-0 right-0 nav-solid px-4 py-2 z-40 safe-area-bottom">
+            <div class="flex justify-around items-center max-w-md mx-auto">
+                <button onclick="showPage('home')" class="nav-item relative flex flex-col items-center py-1 active" data-page="home">
+                    <span class="text-lg">🏠</span>
+                    <span class="text-[9px] mt-0.5">Главная</span>
                 </button>
-                <button onclick="showPage('tasks')" class="nav-item relative flex flex-col items-center px-2" data-page="tasks">
-                    <span class="text-xl">📋</span>
-                    <span class="text-[10px] mt-1">Задачи</span>
+                <button onclick="showPage('tasks')" class="nav-item relative flex flex-col items-center py-1" data-page="tasks">
+                    <span class="text-lg">📋</span>
+                    <span class="text-[9px] mt-0.5">Задачи</span>
                 </button>
-                <button onclick="showPage('calendar')" class="nav-item relative flex flex-col items-center px-2" data-page="calendar">
-                    <span class="text-xl">📅</span>
-                    <span class="text-[10px] mt-1">Календарь</span>
-                </button>
-                <button onclick="showPage('pomodoro')" class="nav-item relative flex flex-col items-center" data-page="pomodoro">
-                    <div class="bg-gradient-to-r from-purple-500 to-pink-500 w-14 h-14 rounded-2xl flex items-center justify-center -mt-6 shadow-lg shadow-purple-500/30">
-                        <span class="text-2xl">⏱️</span>
+                <button onclick="showPage('calendar')" class="nav-item relative flex flex-col items-center" data-page="calendar">
+                    <div class="bg-gradient-to-r from-purple-500 to-pink-500 w-12 h-12 rounded-xl flex items-center justify-center -mt-4 shadow-lg shadow-purple-500/30">
+                        <span class="text-xl">📅</span>
                     </div>
                 </button>
-                <button onclick="showPage('habits')" class="nav-item relative flex flex-col items-center px-2" data-page="habits">
-                    <span class="text-xl">🎯</span>
-                    <span class="text-[10px] mt-1">Привычки</span>
+                <button onclick="showPage('habits')" class="nav-item relative flex flex-col items-center py-1" data-page="habits">
+                    <span class="text-lg">🎯</span>
+                    <span class="text-[9px] mt-0.5">Привычки</span>
                 </button>
-                <button onclick="showPage('journal')" class="nav-item relative flex flex-col items-center px-2" data-page="journal">
-                    <span class="text-xl">📓</span>
-                    <span class="text-[10px] mt-1">Журнал</span>
-                </button>
-                <button onclick="showPage('analytics')" class="nav-item relative flex flex-col items-center px-2" data-page="analytics">
-                    <span class="text-xl">📊</span>
-                    <span class="text-[10px] mt-1">Статистика</span>
+                <button onclick="toggleMoreMenu()" class="nav-item relative flex flex-col items-center py-1" data-page="more">
+                    <span class="text-lg">☰</span>
+                    <span class="text-[9px] mt-0.5">Меню</span>
                 </button>
             </div>
         </nav>
+        
+        <!-- More Menu Modal -->
+        <div id="moreMenu" class="fixed bottom-20 right-4 z-50 hidden">
+            <div class="rounded-2xl p-3 shadow-xl slide-up" style="background: var(--bg-card-solid); border: 1px solid var(--border-color)">
+                <button onclick="showPage('pomodoro'); closeMoreMenu()" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-white/5">
+                    <span class="text-lg">⏱️</span>
+                    <span class="text-sm">Помодоро</span>
+                </button>
+                <button onclick="showPage('journal'); closeMoreMenu()" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-white/5">
+                    <span class="text-lg">📓</span>
+                    <span class="text-sm">Журнал</span>
+                </button>
+                <button onclick="showPage('water'); closeMoreMenu()" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-white/5">
+                    <span class="text-lg">💧</span>
+                    <span class="text-sm">Вода</span>
+                </button>
+                <button onclick="showPage('sleep'); closeMoreMenu()" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-white/5">
+                    <span class="text-lg">😴</span>
+                    <span class="text-sm">Сон</span>
+                </button>
+                <button onclick="showPage('projects'); closeMoreMenu()" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-white/5">
+                    <span class="text-lg">📁</span>
+                    <span class="text-sm">Проекты</span>
+                </button>
+                <button onclick="showPage('analytics'); closeMoreMenu()" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-white/5">
+                    <span class="text-lg">📊</span>
+                    <span class="text-sm">Аналитика</span>
+                </button>
+                <button onclick="showPage('settings'); closeMoreMenu()" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-white/5">
+                    <span class="text-lg">⚙️</span>
+                    <span class="text-sm">Настройки</span>
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- ==================== MODALS ==================== -->
@@ -1990,6 +2025,15 @@
         function closeModal() {
             document.getElementById('modalOverlay').classList.add('hidden');
             document.querySelectorAll('[id$="Modal"]').forEach(m => m.classList.add('hidden'));
+        }
+        
+        function toggleMoreMenu() {
+            const menu = document.getElementById('moreMenu');
+            menu.classList.toggle('hidden');
+        }
+        
+        function closeMoreMenu() {
+            document.getElementById('moreMenu').classList.add('hidden');
         }
 
         function showToast(message) {
